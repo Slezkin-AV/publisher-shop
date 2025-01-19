@@ -4,15 +4,25 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.4</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
     <groupId>otus</groupId>
     <artifactId>publisher-shop</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>pub-user</module>
+        <module>user</module>
+        <module>billing</module>
+<!--        <module>publisher</module>-->
     </modules>
 
     <properties>
+        <java.version>21</java.version>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -121,31 +131,31 @@
             </plugin>
 
 <!--            Тестирование: mvn validate -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.8</version>
-                <executions>
-                    <execution>
-                        <id>getMainBaseDir</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <exportAntProperties>true</exportAntProperties>
-                            <target>
-                                <!--Adjust the location below to your directory structure -->
-                                <property name="main.basedir" location="./.." />
-                                <echo message="main.basedir=${main.basedir}"/>
-                                <echo message="srcipts.basedir=${srcipts.basedir}"/>
-                                <echo message="project.artifactId=${project.artifactId}"/>
-                                <echo message="project.parent.relativePath=${project.parent.relativePath}"/>
-                            </target>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-antrun-plugin</artifactId>-->
+<!--                <version>1.8</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>getMainBaseDir</id>-->
+<!--                        <phase>validate</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>run</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <exportAntProperties>true</exportAntProperties>-->
+<!--                            <target>-->
+<!--                                &lt;!&ndash;Adjust the location below to your directory structure &ndash;&gt;-->
+<!--                                <property name="main.basedir" location="./.." />-->
+<!--&lt;!&ndash;                                <echo message="main.basedir=${main.basedir}"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <echo message="srcipts.basedir=${srcipts.basedir}"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <echo message="project.artifactId=${project.artifactId}"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <echo message="project.parent.relativePath=${project.parent.relativePath}"/>&ndash;&gt;-->
+<!--                            </target>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
 
         </plugins>
 
@@ -168,8 +178,6 @@
 
             </plugins>
         </pluginManagement>
-
     </build>
-
 
 </project>

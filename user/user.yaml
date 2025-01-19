@@ -1,0 +1,168 @@
+---
+# Source: user/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: user
+  labels:
+    helm.sh/chart: user-0.1.0
+    app.kubernetes.io/name: user
+    app.kubernetes.io/instance: user
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+automountServiceAccountToken: true
+---
+# Source: user/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-config
+  labels:
+    helm.sh/chart: user-0.1.0
+    app.kubernetes.io/name: user
+    app.kubernetes.io/instance: user
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+data:
+  POSTGRES_DB: user_db
+  POSTGRES_USER: admin
+  POSTGRES_PASSWORD: passadmin
+  PGDATA: /var/lib/postgresql/data/pgdata
+
+
+  spring.datasource.url: jdbc:postgresql://localhost:5432/postgres
+  spring.datasource.username: admin
+  spring.datasource.password: passadmin
+  jakarta.persistence.jdbc.url: jdbc:postgresql://localhost:5432/public/
+
+  # This will drop any table in the database and create new ones base on the models
+  spring.jpa.hibernate.ddl-auto: create-drop
+---
+# Source: user/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: user
+  labels:
+    helm.sh/chart: user-0.1.0
+    app.kubernetes.io/name: user
+    app.kubernetes.io/instance: user
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8000
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: 9093
+      targetPort: 9000
+      protocol: TCP
+      name: metrics
+  selector:
+    app.kubernetes.io/name: user
+    app.kubernetes.io/instance: user
+---
+# Source: user/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user
+  labels:
+    helm.sh/chart: user-0.1.0
+    app.kubernetes.io/name: user
+    app.kubernetes.io/instance: user
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: user
+      app.kubernetes.io/instance: user
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: user-0.1.0
+        app.kubernetes.io/name: user
+        app.kubernetes.io/instance: user
+        app.kubernetes.io/version: "1.16.0"
+        app.kubernetes.io/managed-by: Helm
+    spec:
+      serviceAccountName: user
+      securityContext:
+        {}
+      containers:
+        - name: user
+          securityContext:
+            {}
+          image: "slezkin71/microservice:user_v01"
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: user-config
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health/
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health/
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            {}
+        - name: user-db
+          securityContext:
+            {}
+          image: "postgres"
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: user-config
+          ports:
+            - name: http
+              containerPort: 5432
+              protocol: TCP
+---
+# Source: user/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: user
+  labels:
+    helm.sh/chart: user-0.1.0
+    app.kubernetes.io/name: user
+    app.kubernetes.io/instance: user
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    nginx.ingress.kubernetes.io/auth-url: http://user.pub.svc.cluster.local:8000/validate
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: "user.localdev.me"
+      http:
+        paths:
+          - path: /user
+            pathType: Prefix
+            backend:
+              service:
+                name: user
+                port:
+                  number: 8000
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: user
+                port:
+                  number: 8000
