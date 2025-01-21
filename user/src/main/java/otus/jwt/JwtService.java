@@ -23,7 +23,7 @@ import java.util.Map;
 public class JwtService {
 
     private final String bearer = "Bearer ";
-    @Value("${jwt.secret.access}")
+//    @Value("${jwt.secret.access}")
     private String jwtAccessSecretCoded;
 
     private static SecretKey jwtAccessSecret;

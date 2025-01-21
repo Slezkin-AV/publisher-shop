@@ -1,9 +1,14 @@
 package otus.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import otus.exception.SrvException;
 import otus.jwt.JwtRequest;
+import otus.kafka.Event;
+import otus.kafka.EventProducer;
+import otus.kafka.EventStatus;
+import otus.kafka.EventType;
 
 import java.util.List;
 
@@ -13,6 +18,9 @@ import java.util.List;
 public class UserService implements UserServiceInterface {
 
     private final UserRepositoryInterface userRepository;
+
+    @Autowired
+    private final EventProducer eventProducer;
 
 //    @Autowired
 //    public UserService(UserRepositoryInterface userRepository){
@@ -25,6 +33,7 @@ public class UserService implements UserServiceInterface {
         if( user.getEmail() ==null || user.getEmail().isEmpty()){throw new SrvException(UserErrorType.ERR_EMAIL_EMPTY);}
         if( !userRepository.findByEmail(user.getEmail()).isEmpty() ){throw new SrvException(UserErrorType.ERR_EMAIL_DUBLICATE);}
         if( !userRepository.findByLogin(user.getLogin()).isEmpty() ){throw new SrvException(UserErrorType.ERR_LOGIN_DUBLICATE);}
+        eventProducer.sendMessage("ok", new Event(EventType.USER_CREATE, EventStatus.SUCCESS, "user", "ok"));
         return UserMapper.mapToUserDto(userRepository.save(user));
     }
 
@@ -32,7 +41,7 @@ public class UserService implements UserServiceInterface {
     public UserPub loginUser(JwtRequest request){
         List<UserPub> lst = userRepository.findByLogin(request.getLogin());
         if(lst.isEmpty() ){throw new SrvException(UserErrorType.ERR_NOT_FOUND);}
-        UserPub usr = lst.get(0);
+        UserPub usr = lst.getFirst();
         if( usr.getPassword() != null && request.getPassword() != null){ //сравнение если оба не null
             if (!(usr.getPassword().equals(request.getPassword()))) {
                 throw new SrvException(UserErrorType.ERR_INCORRECT_PASSWORD);

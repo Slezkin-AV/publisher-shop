@@ -17,7 +17,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>user</module>
-        <module>billing</module>
+<!--        <module>billing</module>-->
 <!--        <module>publisher</module>-->
     </modules>
 
@@ -118,6 +118,14 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
             <version>0.11.2</version>
+        </dependency>
+
+<!--        Kafka -->
+
+        <!-- Spring Boot Starter for Kafka -->
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
         </dependency>
 
     </dependencies>

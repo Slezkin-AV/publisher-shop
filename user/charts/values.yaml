@@ -8,9 +8,10 @@ image:
   pullPolicy: Always
 #  IfNotPresent
 
-#  <<<<!!!!!!!!!!!!!!1>>>>
+
+#  <<<<===============================>>>>
   tag: "user_v01"
-#  <<<<!!!!!!!!!!!!!!1>>>>
+#  <<<<===============================>>>>
 
 
 # This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
@@ -22,7 +23,7 @@ fullnameOverride: ""
 #This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
 serviceAccount:
   # Specifies whether a service account should be created
-  create: true
+  create: false
   # Automatically mount a ServiceAccount's API credentials?
   automount: true
   # Annotations to add to the service account
@@ -67,16 +68,20 @@ service:
 ingress:
   enabled: true
   className: "nginx"
-  annotations:
+  annotations: {}
+  sec_annotations:
     nginx.ingress.kubernetes.io/auth-url: "http://user.pub.svc.cluster.local:8000/validate"
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: user.localdev.me
+    - host: publisher.localdev.me
+      paths:
+        - path: /
+          pathType: Prefix
+  sec_hosts:
+    - host: publisher.localdev.me
       paths:
         - path: /user
-          pathType: Prefix
-        - path: /
           pathType: Prefix
   tls: []
   #  - secretName: chart-example-tls
@@ -96,14 +101,14 @@ livenessProbe:
   httpGet:
     path: /health/
     port: http
-  initialDelaySeconds: 5
-  periodSeconds: 5
+  initialDelaySeconds: 10
+  periodSeconds: 10
 readinessProbe:
   httpGet:
     path: /health/
     port: http
-  initialDelaySeconds: 5
-  periodSeconds: 5
+  initialDelaySeconds: 15
+  periodSeconds: 10
 
 #This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:
