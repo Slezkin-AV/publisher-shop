@@ -20,6 +20,18 @@
         <image.version>v01</image.version>
     </properties>
 
+    <dependencies>
+
+<!--        <dependency>-->
+<!--            <groupId>otus</groupId>-->
+<!--            <artifactId>lib</artifactId>-->
+<!--            <version>1.0-SNAPSHOT</version>-->
+<!--&lt;!&ndash;            <scope>runtime</scope>&ndash;&gt;-->
+<!--        </dependency>-->
+
+
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -49,7 +61,7 @@
                 <executions>
                     <execution>
                         <id>docker</id>
-                        <phase>package</phase>
+                        <phase>install</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>

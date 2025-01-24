@@ -1,12 +1,12 @@
 package otus.user;
 
-import otus.jwt.JwtRequest;
+import otus.lib.jwt.JwtRequest;
 
 public interface UserServiceInterface {
-    UserDto registerUser(UserPub user);
-    UserPub loginUser(JwtRequest request);
-    UserDto createUser(UserPub user);
+    UserDto registerUser(User user);
+    User loginUser(JwtRequest request);
+    UserDto createUser(User user);
     UserDto getUser(Long id);
-    UserDto updateUser(Long ig, UserPub user);
+    UserDto updateUser(Long ig, User user);
     void deleteUser(Long id);
 }

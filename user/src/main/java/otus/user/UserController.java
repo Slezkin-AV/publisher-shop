@@ -6,9 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import otus.jwt.JwtRequest;
-import otus.jwt.JwtResponce;
-import otus.jwt.JwtService;
+import otus.lib.jwt.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Slf4j
@@ -28,7 +29,7 @@ public class UserController {
 
     //register
     @PostMapping("/register")
-    public ResponseEntity<UserDto> registerUser(@RequestBody UserPub user){
+    public ResponseEntity<UserDto> registerUser(@RequestBody User user){
         UserDto savedUser = userService.registerUser(user);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
@@ -37,14 +38,18 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<JwtResponce> loginUser(
             @RequestBody JwtRequest request){
-        UserPub savedUser = userService.loginUser(request);
-        JwtResponce responce = new JwtResponce(savedUser.getId(),jwtService.generateAccessToken(savedUser));
+        User savedUser = userService.loginUser(request);
+        Map<String, String> claims = new HashMap<String,String>();
+        claims.put("id",savedUser.getId().toString());
+        claims.put("login", savedUser.getLogin());
+        claims.put("email", savedUser.getEmail());
+        JwtResponce responce = new JwtResponce(savedUser.getId(),jwtService.generateAccessToken(savedUser.getLogin(), claims));
         return new ResponseEntity<>(responce, HttpStatus.CREATED);
     }
 
     @Timed(value="user.create.time",description="time to create users",percentiles={0.5,0.95,0.99})
     @PostMapping("/user")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserPub user){
+    public ResponseEntity<UserDto> createUser(@RequestBody User user){
         UserDto savedUser = userService.createUser(user);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
@@ -70,7 +75,7 @@ public class UserController {
 //        if( auth != null) {
 //            log.info(auth.getPrincipal().toString(), auth.isAuthenticated());
 //        }
-//        if( !jwtService.validateId(userId, bearerToken)) throw new SrvException(UserErrorType.ERR_NOT_FOUND);
+//        if( !jwtService.validateId(userId, bearerToken)) throw new SrvException(ErrorType.ERR_NOT_FOUND);
         UserDto user = userService.getUser(userId);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -79,7 +84,7 @@ public class UserController {
     @Timed(value="user.update.time",description="time to create users",percentiles={0.5,0.95,0.99})
     @PutMapping("/user/{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long userId,
-                                              @RequestBody UserPub user){
+                                              @RequestBody User user){
 //        user.setId(userId);
         UserDto updatedUser = userService.updateUser(userId,user);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
