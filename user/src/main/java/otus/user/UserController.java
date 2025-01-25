@@ -39,7 +39,7 @@ public class UserController {
     public ResponseEntity<JwtResponce> loginUser(
             @RequestBody JwtRequest request){
         User savedUser = userService.loginUser(request);
-        Map<String, String> claims = new HashMap<String,String>();
+        Map<String, Object> claims = new HashMap<String,Object>();
         claims.put("id",savedUser.getId().toString());
         claims.put("login", savedUser.getLogin());
         claims.put("email", savedUser.getEmail());

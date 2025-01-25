@@ -15,13 +15,14 @@ public class UserMapper {
                 user.getPassword()
         );
         //случайное замедление
-        Random random = new Random();
-        int randomNumber = random.nextInt(1000);  // вернёт случайное число от 0 до 999
-        try{
-            Thread.sleep(100 + randomNumber);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } //конец случайного замедления
+//        Random random = new Random();
+//        int randomNumber = random.nextInt(1000);  // вернёт случайное число от 0 до 999
+//        try{
+//            Thread.sleep(100 + randomNumber);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+        //конец случайного замедления
 
         return userDto;
     }

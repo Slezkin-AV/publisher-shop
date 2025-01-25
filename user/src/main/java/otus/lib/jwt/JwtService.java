@@ -31,20 +31,20 @@ public class JwtService {
         jwtAccessSecret = Keys.hmacShaKeyFor(Decoders.BASE64.decode(accessSecret));
     }
 
-    public String generateAccessToken(String subject,Map<String, String> mapClaims)  {
+    public String generateAccessToken(String subject,Map<String, Object> mapClaims)  {
         final LocalDateTime now = LocalDateTime.now();
         final Instant accessExpirationInstant = now.plusMinutes(5).atZone(ZoneId.systemDefault()).toInstant();
         final Date accessExpiration = Date.from(accessExpirationInstant);
         final Date issued = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
-        Jwts.builder()
+        return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
                 .setHeaderParam("alg","HS256")
                 .setSubject(subject)
                 .setIssuedAt(issued)
                 .setExpiration(accessExpiration)
-                .signWith(jwtAccessSecret);
-        mapClaims.forEach((k,v) -> Jwts.builder().claim(k,v));
-        return Jwts.builder().compact();
+                .addClaims(mapClaims)
+                .signWith(jwtAccessSecret)
+                .compact();
     }
 
     public boolean validateBearerToken(@NonNull String bearerToken) {
