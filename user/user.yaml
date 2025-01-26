@@ -36,6 +36,9 @@ metadata:
     app.kubernetes.io/instance: user
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
+  annotations:
+    prometheus.io/port: "8000"
+    prometheus.io/scrape: "true"
 spec:
   type: ClusterIP
   ports:
@@ -171,3 +174,30 @@ spec:
                 name: user
                 port:
                   number: 8000
+---
+# Source: user/templates/servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: user-monitor
+  labels:
+    helm.sh/chart: user-0.1.0
+    app.kubernetes.io/name: user
+    app.kubernetes.io/instance: user
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+    release: kube-prometheus-stack
+#    release: kube-prometheus-stack
+spec:
+  endpoints:
+    - port: ""
+      scheme: http
+      path: /actuator/prometheus
+      interval: 60s
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: user
+      app.kubernetes.io/instance: user
+  namespaceSelector:
+    matchNames:
+      - pub

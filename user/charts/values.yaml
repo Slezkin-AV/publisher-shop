@@ -58,11 +58,12 @@ service:
   port: 8000
   metrics_port: 9000
   monitor_port: 9093
-  ##  namespace: default
+  namespace: pub
   #  # Annotations to add to the service account
   annotations:
     prometheus.io/port: "metrics"
     prometheus.io/scrape: "true"
+    prometheus.io/port: "8000"
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
@@ -153,5 +154,12 @@ spring:
   ddl_auto: create-drop
   # update
   # none
+
+service_monitor:
+  labels_additional:
+    release: kube-prometheus-stack
+  path: /actuator/prometheus
+  interval: 60s
+
 
 
