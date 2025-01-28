@@ -28,6 +28,7 @@ public class UserController {
 //    }
 
     //register
+    @Timed(value="user.register.time",description="time to register users",percentiles={0.5,0.95,0.99})
     @PostMapping("/register")
     public ResponseEntity<UserDto> registerUser(@RequestBody User user){
         UserDto savedUser = userService.registerUser(user);
@@ -35,6 +36,7 @@ public class UserController {
     }
 
     //login
+    @Timed(value="user.login.time",description="time to login users",percentiles={0.5,0.95,0.99})
     @PostMapping("/login")
     public ResponseEntity<JwtResponce> loginUser(
             @RequestBody JwtRequest request){
