@@ -23,10 +23,10 @@ public class AccountKafkaConsumerService {
 
     @KafkaListener(topics = "user", groupId = "group-id")//, errorHandler = "handleKafkaException")
     public void listen(String message) throws JsonProcessingException {
-        log.info("Received Message: " + message);
+//        log.info("Received Message: " + message);
         ObjectMapper objectMapper = new ObjectMapper();
         Event event = objectMapper.readValue(message, Event.class);
-        log.info(event.description());
+//        log.info(event.description());
         // Здесь можно добавить логику обработки сообщения
         accountService.createAccount(event);
     }

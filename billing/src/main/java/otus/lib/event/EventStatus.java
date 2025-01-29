@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum EventStatus {
-    SUCCESS("User creating"),
-    ERROR("Account creating");
+    SUCCESS("SUCCESS"),
+    ERROR("ERROR");
 
     EventStatus(String description) {
         this.description = description;

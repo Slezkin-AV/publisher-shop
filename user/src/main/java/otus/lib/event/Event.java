@@ -22,11 +22,12 @@ public class Event {
     }
 
     public String description() {
-        return "Event{type='" + type.getDescription() + "', "
+        return "Event{ "
+                + "type='" + type.getDescription() + "', "
                 + "status='" + status.getDescription() + "'"
                 + "source='" + source + "'"
                 + "userId='" + userId + "'"
                 + "amount='" + amount + "'"
-                + "}";
+                + " }";
     }
 }

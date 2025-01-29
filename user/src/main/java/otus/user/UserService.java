@@ -30,14 +30,15 @@ public class UserService implements UserServiceInterface {
         if( user.getEmail() ==null || user.getEmail().isEmpty()){throw new SrvException(ErrorType.USR_EMAIL_EMPTY);}
         if( !userRepository.findByEmail(user.getEmail()).isEmpty() ){throw new SrvException(ErrorType.USR_EMAIL_DUBLICATE);}
         if( !userRepository.findByLogin(user.getLogin()).isEmpty() ){throw new SrvException(ErrorType.USR_LOGIN_DUBLICATE);}
+        User usr = userRepository.save(user);
         try {
             Event event = new Event(EventType.USER_CREATE, EventStatus.SUCCESS,
-                    "user", user.getEmail(), user.getId(), -1, -1);
+                    "user", usr.getEmail(), usr.getId(), -1, -1);
             eventProducer.sendMessage(event);
         }catch (RuntimeException | JsonProcessingException ex){
             log.info(String.valueOf(ex));
         }
-        return UserMapper.mapToUserDto(userRepository.save(user));
+        return UserMapper.mapToUserDto(usr);
     }
 
     @Override
