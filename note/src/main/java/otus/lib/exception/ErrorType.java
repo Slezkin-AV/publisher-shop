@@ -1,0 +1,22 @@
+package otus.lib.exception;
+
+import lombok.Getter;
+
+@Getter
+public enum ErrorType {
+    USR_DUPLICATE("Note already exists"),
+    USR_NOT_FOUND("Note not found"),
+    USR_NOT_LOGGED("Note not logged"),
+    USR_LOGIN_EMPTY("Login cannot be empty"),
+    USR_EMAIL_EMPTY("Email cannot be empty"),
+    USR_LOGIN_DUBLICATE("Login already exists"),
+    USR_EMAIL_DUBLICATE("Email already exists"),
+    USR_INCORRECT_PASSWORD("Password is incorrect"),
+    ACC_NOT_FOUND("Account not found"),
+    UNKNOWN_ERROR("Unknown Error");
+
+    ErrorType(String description) {
+        this.description = description;
+    }
+    private String description;
+}

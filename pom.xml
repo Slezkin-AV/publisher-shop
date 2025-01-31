@@ -19,6 +19,7 @@
 <!--        <module>lib</module>-->
         <module>user</module>
         <module>billing</module>
+        <module>note</module>
 <!--        <module>publisher</module>-->
     </modules>
 

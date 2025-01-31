@@ -1,0 +1,176 @@
+---
+# Source: note/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: note-config
+  labels:
+    helm.sh/chart: note-0.1.0
+    app.kubernetes.io/name: note
+    app.kubernetes.io/instance: note
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+data:
+  POSTGRES_DB: note_db
+  POSTGRES_USER: admin
+  POSTGRES_PASSWORD: passadmin
+  PGDATA: /var/lib/postgresql/data/pgdata
+
+
+  spring.datasource.url: jdbc:postgresql://localhost:5432/postgres
+  spring.datasource.username: admin
+  spring.datasource.password: passadmin
+  jakarta.persistence.jdbc.url: jdbc:postgresql://localhost:5432/public/
+
+  # This will drop any table in the database and create new ones base on the models
+  spring.jpa.hibernate.ddl-auto: create-drop
+---
+# Source: note/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: note
+  labels:
+    helm.sh/chart: note-0.1.0
+    app.kubernetes.io/name: note
+    app.kubernetes.io/instance: note
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    prometheus.io/port: "8000"
+    prometheus.io/scrape: "true"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8000
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: 9093
+      targetPort: 9000
+      protocol: TCP
+      name: metrics
+  selector:
+    app.kubernetes.io/name: note
+    app.kubernetes.io/instance: note
+---
+# Source: note/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: note
+  labels:
+    helm.sh/chart: note-0.1.0
+    app.kubernetes.io/name: note
+    app.kubernetes.io/instance: note
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: note
+      app.kubernetes.io/instance: note
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: note-0.1.0
+        app.kubernetes.io/name: note
+        app.kubernetes.io/instance: note
+        app.kubernetes.io/version: "1.16.0"
+        app.kubernetes.io/managed-by: Helm
+    spec:
+      serviceAccountName: default
+      securityContext:
+        {}
+      containers:
+        - name: note
+          securityContext:
+            {}
+          image: "slezkin71/microservice:note_v01"
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: note-config
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health/
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health/
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            {}
+        - name: note-db
+          securityContext:
+            {}
+          image: "postgres"
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: note-config
+          ports:
+            - name: http
+              containerPort: 5432
+              protocol: TCP
+---
+# Source: note/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: note
+  labels:
+    helm.sh/chart: note-0.1.0
+    app.kubernetes.io/name: note
+    app.kubernetes.io/instance: note
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: "note.localdev.me"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: note
+                port:
+                  number: 8000
+---
+# Source: note/templates/servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: note-monitor
+  labels:
+    helm.sh/chart: note-0.1.0
+    app.kubernetes.io/name: note
+    app.kubernetes.io/instance: note
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+    release: kube-prometheus-stack
+#    release: kube-prometheus-stack
+spec:
+  endpoints:
+    - port: ""
+      scheme: http
+      path: /actuator/prometheus
+      interval: 60s
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: note
+      app.kubernetes.io/instance: note
+  namespaceSelector:
+    matchNames:
+      - pub
