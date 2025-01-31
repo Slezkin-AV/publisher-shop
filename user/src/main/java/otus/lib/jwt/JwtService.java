@@ -74,6 +74,7 @@ public class JwtService {
         } catch (Exception e) {
             log.error("invalid token");//, e);
         }
+        log.error("validating token failed " + token);
         return false;
     }
 

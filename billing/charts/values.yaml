@@ -8,9 +8,9 @@ image:
   pullPolicy: Always
 #  IfNotPresent
 
-#  <<<<!!!!!!!!!!!!!!1>>>>
+#  <<<<===============================>>>>
   tag: "billing_v01"
-#  <<<<!!!!!!!!!!!!!!1>>>>
+#  <<<<===============================>>>>
 
 
 # This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
@@ -57,11 +57,13 @@ service:
   port: 8000
   metrics_port: 9000
   monitor_port: 9093
+  namespace: pub
   ##  namespace: default
   #  # Annotations to add to the service account
   annotations:
     prometheus.io/port: "metrics"
     prometheus.io/scrape: "true"
+    prometheus.io/port: "8000"
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
@@ -74,7 +76,7 @@ ingress:
   hosts:
     - host: billing.localdev.me
       paths:
-        - path: /billing
+        - path: /
           pathType: Prefix
   tls: []
   #  - secretName: chart-example-tls
@@ -147,4 +149,8 @@ spring:
   # update
   # none
 
-
+service_monitor:
+  labels_additional:
+    release: kube-prometheus-stack
+  path: /actuator/prometheus
+  interval: 60s

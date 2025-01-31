@@ -137,10 +137,37 @@ spec:
     - host: "billing.localdev.me"
       http:
         paths:
-          - path: /billing
+          - path: /
             pathType: Prefix
             backend:
               service:
                 name: billing
                 port:
                   number: 8000
+---
+# Source: billing/templates/servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: billing-monitor
+  labels:
+    helm.sh/chart: billing-0.1.0
+    app.kubernetes.io/name: billing
+    app.kubernetes.io/instance: billing
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+    release: kube-prometheus-stack
+#    release: kube-prometheus-stack
+spec:
+  endpoints:
+    - port: ""
+      scheme: http
+      path: /actuator/prometheus
+      interval: 60s
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: billing
+      app.kubernetes.io/instance: billing
+  namespaceSelector:
+    matchNames:
+      - pub
