@@ -85,7 +85,13 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: {}
+resources: #{}
+  limits:
+    cpu: 1000m
+    memory: 512Mi
+  requests:
+    cpu: 500m
+    memory: 512Mi
   # limits:
   #   cpu: 100m
   #   memory: 128Mi
@@ -98,14 +104,14 @@ livenessProbe:
   httpGet:
     path: /health/
     port: http
-  initialDelaySeconds: 5
-  periodSeconds: 5
+  initialDelaySeconds: 30
+  periodSeconds: 15
 readinessProbe:
   httpGet:
     path: /health/
     port: http
-  initialDelaySeconds: 5
-  periodSeconds: 5
+  initialDelaySeconds: 50
+  periodSeconds: 15
 
 #This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:

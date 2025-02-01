@@ -61,4 +61,11 @@ public class AccountController {
     public String zeroPage(){
         return "It's zero page. Use '/health/' path ";
     }
+
+    @PostMapping("/clean")
+    public String cleanAll(){
+        accountService.cleanAll();
+        return "Accounts Cleaned";
+    }
+
 }

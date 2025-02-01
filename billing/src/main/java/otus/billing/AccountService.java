@@ -49,4 +49,9 @@ public class AccountService implements AccountServiceInterface {
     public void deleteAccount(long id){
         return;
     }
+
+    public void cleanAll(){
+        accountRepository.deleteAll();
+    }
+
 }

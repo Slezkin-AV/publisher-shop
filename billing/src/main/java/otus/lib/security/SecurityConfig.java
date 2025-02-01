@@ -27,6 +27,7 @@ public class SecurityConfig  {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/register","/validate","/health/", "/", "/login", "/actuator/**").permitAll()
                         .requestMatchers("/user/*").permitAll()
+                        .requestMatchers("/clean/*").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())

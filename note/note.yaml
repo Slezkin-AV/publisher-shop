@@ -100,16 +100,21 @@ spec:
             httpGet:
               path: /health/
               port: http
-            initialDelaySeconds: 5
-            periodSeconds: 5
+            initialDelaySeconds: 30
+            periodSeconds: 15
           readinessProbe:
             httpGet:
               path: /health/
               port: http
-            initialDelaySeconds: 5
-            periodSeconds: 5
+            initialDelaySeconds: 50
+            periodSeconds: 15
           resources:
-            {}
+            limits:
+              cpu: 1000m
+              memory: 512Mi
+            requests:
+              cpu: 500m
+              memory: 512Mi
         - name: note-db
           securityContext:
             {}

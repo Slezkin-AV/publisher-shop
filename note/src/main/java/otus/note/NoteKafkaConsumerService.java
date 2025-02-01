@@ -18,7 +18,7 @@ public class NoteKafkaConsumerService {
     private final NoteService noteService;
 
 
-    @KafkaListener(topics = {"user", "billing"}, groupId = "group-id")//, errorHandler = "handleKafkaException")
+    @KafkaListener(topics = {"user", "billing"}, groupId = "note-group")//, errorHandler = "handleKafkaException")
     public void listen(String message) throws JsonProcessingException {
         log.info("Received Message: " + message);
         ObjectMapper objectMapper = new ObjectMapper();

@@ -110,6 +110,14 @@ public class UserController {
     public String zeroPage(){
         return "It's zero page. Use '/health/' path ";
     }
+
+    @PostMapping("/clean")
+    public String cleanAll(){
+        userService.cleanAll();
+        return "Users Cleaned";
+    }
+
+
     //    // Build Get All Users REST API
 //    // http://localhost:8080/api/users
 //    @GetMapping("/users")

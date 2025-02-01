@@ -21,9 +21,9 @@ public class AccountKafkaConsumerService {
 //        this.accountService = accountService;
 //    }
 
-    @KafkaListener(topics = "user", groupId = "group-id")//, errorHandler = "handleKafkaException")
+    @KafkaListener(topics = "user", groupId = "billing-group")//, errorHandler = "handleKafkaException")
     public void listen(String message) throws JsonProcessingException {
-//        log.info("Received Message: " + message);
+        log.info("Received Message: " + message);
         ObjectMapper objectMapper = new ObjectMapper();
         Event event = objectMapper.readValue(message, Event.class);
 //        log.info(event.description());

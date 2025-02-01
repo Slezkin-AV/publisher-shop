@@ -28,4 +28,8 @@ public class NoteService implements NoteServiceInterface {
         return NoteMapper.mapToNoteDto(note1);
     }
 
+    public void cleanAll(){
+        noteRepository.deleteAll();
+    }
+
 }

@@ -90,6 +90,10 @@ public class UserService implements UserServiceInterface {
         return;
     }
 
+    public void cleanAll(){
+        userRepository.deleteAll();
+    }
+
 //    public List<UserDto> getAllUsers(){
 //        List<UserDto> ls = new ArrayList<UserDto>();
 //        UserDto usr = new UserDto();

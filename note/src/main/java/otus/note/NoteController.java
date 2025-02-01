@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class NoteController {
 
+    private NoteService noteService;
+
 
     @GetMapping("/health/")
     public String healthCheck(){
@@ -21,5 +23,11 @@ public class NoteController {
     @GetMapping("/")
     public String zeroPage(){
         return "It's zero page. Use '/health/' path ";
+    }
+
+    @PostMapping("/clean")
+    public String cleanAll(){
+        noteService.cleanAll();
+        return "Notes Cleaned";
     }
 }
