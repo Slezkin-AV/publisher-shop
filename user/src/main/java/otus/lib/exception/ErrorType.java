@@ -13,6 +13,7 @@ public enum ErrorType {
     USR_EMAIL_DUBLICATE("Email already exists"),
     USR_INCORRECT_PASSWORD("Password is incorrect"),
     ACC_NOT_FOUND("Account not found"),
+    ORD_NOT_FOUND("Order not found"),
     UNKNOWN_ERROR("Unknown Error");
 
     ErrorType(String description) {

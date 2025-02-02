@@ -20,6 +20,7 @@
         <module>user</module>
         <module>billing</module>
         <module>note</module>
+        <module>order</module>
 <!--        <module>publisher</module>-->
     </modules>
 
