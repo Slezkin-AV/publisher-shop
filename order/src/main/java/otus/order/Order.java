@@ -7,6 +7,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import otus.lib.event.Event;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 
@@ -16,21 +17,37 @@ import java.time.LocalDateTime;
 @Entity
 @ToString(callSuper = true)
 @Table(schema = "public")
-@EqualsAndHashCode(callSuper=true)
+//@EqualsAndHashCode(callSuper=true)
 @EnableJpaAuditing
-public class Order extends Event {
+public class Order {// extends Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(updatable = false)
     @CreatedDate
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
 
     @LastModifiedDate
-    private LocalDateTime updatedAt;
+    private Timestamp updatedAt;
 
     private OrderStatus orderStatus;
+
+    @NonNull
+    private Long userId;
+    private double amount;
+
+    @PrePersist
+    private void onCreate(){
+        updatedAt = Timestamp.valueOf(LocalDateTime.now());
+        createdAt = Timestamp.valueOf(LocalDateTime.now());
+        orderStatus = OrderStatus.CREATED;
+    }
+
+    @PreUpdate
+    private void onUpdate(){
+        updatedAt = Timestamp.valueOf(LocalDateTime.now());
+    }
 
 //    public Order(Event event){
 //        super(event.getType(), event.getStatus(),

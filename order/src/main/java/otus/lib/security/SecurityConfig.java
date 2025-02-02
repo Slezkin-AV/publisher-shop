@@ -26,7 +26,7 @@ public class SecurityConfig  {
                 .cors(AbstractHttpConfigurer::disable) // Disable CORS
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/register","/validate","/health/", "/", "/login", "/actuator/**","/metrics").permitAll()
-                        .requestMatchers("/user/*","/order/*").permitAll()
+                        .requestMatchers("/user/*","/order/*", "/order").permitAll()
                         .requestMatchers("/clean/*").permitAll()
                         .anyRequest().authenticated()
                 )

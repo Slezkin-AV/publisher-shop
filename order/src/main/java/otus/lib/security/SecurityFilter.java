@@ -23,7 +23,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String checkURI = "/user/";
+        String checkURI = "/order/";
         String auth = request.getHeader("Authorization");
         String uri = request.getRequestURI();
         JwtService jwtService = new JwtService();
@@ -41,9 +41,11 @@ public class SecurityFilter extends OncePerRequestFilter {
                 }
             }
             filterChain.doFilter(request, response);
-//        log.info("{} : {}, ID: {}, checkId: {}, checkURI: {} Auth: {}",
-//                request.getMethod(), request.getRequestURI(), id, checkId.toString(),
-//                checkURI, request.getHeader("Authorization"));
+
+        log.info("{} : {}, ID: {}, checkId: {}, checkURI: {}, Auth: {}",
+                request.getMethod(), request.getRequestURI(), id, checkId,
+                checkURI, request.getHeader("Authorization"));
+
         }catch(SrvException ex) {
              response.resetBuffer();
              response.setStatus(401);

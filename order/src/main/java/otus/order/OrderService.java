@@ -69,8 +69,9 @@ public class OrderService implements OrderServiceInterface {
         assert order1 != null;
         // + to Kafka
         try {
-            Event event1 = new Event(EventType.ORDER_CREATED, EventStatus.SUCCESS,
-                    "order","order created", order1.getUserId(), order1.getAmount(), order1.getId());
+            EventType eventType = EventType.ORDER_CREATED;
+            Event event1 = new Event(eventType, EventStatus.SUCCESS,
+                    "order",eventType.getDescription(), order1.getUserId(), order1.getAmount(), order1.getId());
             eventProducer.sendMessage(event1);
         } catch(RuntimeException | JsonProcessingException ex) {
             log.info(String.valueOf(ex));

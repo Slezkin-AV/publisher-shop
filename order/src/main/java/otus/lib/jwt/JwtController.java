@@ -17,7 +17,7 @@ public class JwtController {
 
     @GetMapping("/validate")
     public ResponseEntity<JwtInfo> validate(@RequestHeader("Authorization") String bearerToken){
-//        log.info("validate");
+        log.info("validate");
         HttpStatus status = HttpStatus.FORBIDDEN;
         if( jwtService.validateBearerToken(bearerToken)){
             status = HttpStatus.ACCEPTED;
