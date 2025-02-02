@@ -1,0 +1,22 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "charts.fullname" . }}-monitor
+  labels:
+    {{- include "charts.labels" . | nindent 4 }}
+  {{- with .Values.service_monitor.labels_additional }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+#    release: kube-prometheus-stack
+spec:
+  endpoints:
+    - port: "{{ .Values.service_monitor.port }}"
+      scheme: http
+      path: {{ .Values.service_monitor.path }}
+      interval: {{ .Values.service_monitor.interval }}
+  selector:
+    matchLabels:
+      {{- include "charts.selectorLabels" . | nindent 6 }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Values.service.namespace }}

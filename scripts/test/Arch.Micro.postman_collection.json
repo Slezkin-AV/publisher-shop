@@ -1,0 +1,553 @@
+{
+	"info": {
+		"_postman_id": "18e2fce7-8706-4911-916d-e358c3d67018",
+		"name": "Arch.Micro",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39133717"
+	},
+	"item": [
+		{
+			"name": "Project",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 2 ,\n    \"firstName\": \"Ivan\",\n    \"lastName\": \"Volkov\",\n    \"email\": \"iv2@bk.ru\",\n    \"login\": \"van2\",\n    \"password\": \"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{current_host}}:8000/register",
+							"host": [
+								"{{current_host}}"
+							],
+							"port": "8000",
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "account",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 2 ,\n    \"firstName\": \"Ivan\",\n    \"lastName\": \"Volkov\",\n    \"email\": \"iv2@bk.ru\",\n    \"login\": \"van2\",\n    \"password\": \"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{billing_host}}:8000/account/1",
+							"host": [
+								"{{billing_host}}"
+							],
+							"port": "8000",
+							"path": [
+								"account",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "hw6",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"firstName\": \"Ivan\",\n    \"lastName\": \"Volkov\",\n    \"email\": \"iv1@bk.ru\",\n    \"login\": \"van1\",\n    \"password\": \"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{current_host}}:8000/register",
+							"host": [
+								"{{current_host}}"
+							],
+							"port": "8000",
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"login\": \"van1\",\n    \"password\": \"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{current_host}}:8000/login",
+							"host": [
+								"{{current_host}}"
+							],
+							"port": "8000",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"login\": \"van1\",\n    \"password\": \"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{current_host}}:8000/login",
+							"host": [
+								"{{current_host}}"
+							],
+							"port": "8000",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "validate",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{current_host}}:8000/validate",
+							"host": [
+								"{{current_host}}"
+							],
+							"port": "8000",
+							"path": [
+								"validate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "validate User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{current_host}}:8000/user",
+							"host": [
+								"{{current_host}}"
+							],
+							"port": "8000",
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{current_host}}:8000/health/",
+							"host": [
+								"{{current_host}}"
+							],
+							"port": "8000",
+							"path": [
+								"health",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get logged",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{current_host}}:8000/user/2",
+							"host": [
+								"{{current_host}}"
+							],
+							"port": "8000",
+							"path": [
+								"user",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "validate1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{current_host}}:8000/validate",
+							"host": [
+								"{{current_host}}"
+							],
+							"port": "8000",
+							"path": [
+								"validate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "hw4",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 2,\n    \"firstName\": \"Ivan\",\n    \"lastName\": \"Volkov\",\n    \"email\": \"iv@bk.ru\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{current_host}}:8000/user",
+							"host": [
+								"{{current_host}}"
+							],
+							"port": "8000",
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{current_host}}:8000/user/1",
+							"host": [
+								"{{current_host}}"
+							],
+							"port": "8000",
+							"path": [
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update user",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 3,\n    \"firstName\": \"Ivan\",\n    \"lastName\": \"Volkov\",\n    \"email\": \"ii_iv@bk.ru\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{current_host}}:8000/user/4",
+							"host": [
+								"{{current_host}}"
+							],
+							"port": "8000",
+							"path": [
+								"user",
+								"4"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "update user",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": 1,\n    \"firstName\": \"Ivan\",\n    \"lastName\": \"Volkov\",\n    \"email\": \"ii_iv@bk.ru\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{current_host}}:8000/user/1",
+									"host": [
+										"{{current_host}}"
+									],
+									"port": "8000",
+									"path": [
+										"user",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 29 Dec 2024 15:10:21 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"firstName\": \"Ivan\",\n    \"lastName\": \"Volkov\",\n    \"email\": \"ii_iv@bk.ru\"\n}"
+						}
+					]
+				},
+				{
+					"name": "delete user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{current_host}}:8000/user/4",
+							"host": [
+								"{{current_host}}"
+							],
+							"port": "8000",
+							"path": [
+								"user",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{current_host}}:8000/health/",
+							"host": [
+								"{{current_host}}"
+							],
+							"port": "8000",
+							"path": [
+								"health",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "hw3",
+			"item": [
+				{
+					"name": "hw3",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://arch.homework/health",
+							"protocol": "http",
+							"host": [
+								"arch",
+								"homework"
+							],
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "current_host",
+			"value": "{{local_host}}",
+			"type": "string"
+		},
+		{
+			"key": "arch_host",
+			"value": "arch.homework",
+			"type": "string"
+		},
+		{
+			"key": "local_host",
+			"value": "publisher.localdev.me",
+			"type": "string"
+		},
+		{
+			"key": "billing_host",
+			"value": "billing.localdev.me",
+			"type": "string"
+		}
+	]
+}
