@@ -22,7 +22,7 @@ public class OrderKafkaConsumerService {
     private final OrderService orderService;
 
 
-    @KafkaListener(topics = {"user", "billing"}, groupId = "order-group")//, errorHandler = "handleKafkaException")
+    @KafkaListener(topics = {"user", "billing"}, groupId = "order-group", errorHandler = "handleKafkaException")
     public void listen(String message) throws JsonProcessingException {
         log.info("Received Message: " + message);
         ObjectMapper objectMapper = new ObjectMapper();

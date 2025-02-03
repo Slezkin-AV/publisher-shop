@@ -42,9 +42,9 @@ public class SecurityFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(request, response);
 
-        log.info("{} : {}, ID: {}, checkId: {}, checkURI: {}, Auth: {}",
-                request.getMethod(), request.getRequestURI(), id, checkId,
-                checkURI, request.getHeader("Authorization"));
+//        log.info("{} : {}, ID: {}, checkId: {}, checkURI: {}, Auth: {}",
+//                request.getMethod(), request.getRequestURI(), id, checkId,
+//                checkURI, request.getHeader("Authorization"));
 
         }catch(SrvException ex) {
              response.resetBuffer();

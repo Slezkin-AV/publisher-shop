@@ -71,7 +71,7 @@ class OrderTest:
             logging.error(f"Exception: {ex}")
         else:
             logging.info(f"responce: {resp}")
-            logging.info(f"data: {resp.text}")
+            # logging.info(f"data: {resp.text}")
             if resp.ok:
                 token = resp.json()["accessToken"]
                 self.tokens[id] = token
@@ -100,7 +100,8 @@ class OrderTest:
             logging.error(f"send order Exception: {ex}, user not logged")
             return
         else:
-            logging.info(f"order for login: {lg} with token: {token}")
+            logging.info(f"order for login: {lg}")
+            # with token: {token}")
 
         # header = {"Authorization": f"Bearer {token}"}
         header = {"Contetn-Type": "application/json"}
@@ -114,7 +115,7 @@ class OrderTest:
             logging.error(f"Exception: {ex}")
         else:
             logging.info(f"responce: {resp}")
-            logging.info(f"data: {resp.text}")
+            # logging.info(f"data: {resp.text}")
             if resp.ok:
                 # token = resp.json()["accessToken"]
                 # self.tokens[id] = token

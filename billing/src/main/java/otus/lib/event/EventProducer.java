@@ -6,7 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Slf4j
 @Component
@@ -25,6 +29,11 @@ public class EventProducer {
         ObjectMapper objectMapper = new ObjectMapper();
         String message = objectMapper.writeValueAsString(event);
         log.info("Sending event: {}", message);
-        kafkaTemplate.send(TOPIC, event.key(), message);
+        try {
+            CompletableFuture<SendResult<String, String>> result = kafkaTemplate.send(TOPIC, event.key(), message);
+            log.info("Sent: {}", result.get().getRecordMetadata().offset());
+        } catch (InterruptedException | ExecutionException ex) {
+            log.error("Ошибка отправки: {}", ex.getMessage());
+        }
     }
 }

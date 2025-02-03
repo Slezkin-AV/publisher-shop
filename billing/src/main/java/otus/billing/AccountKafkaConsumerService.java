@@ -8,6 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import otus.lib.event.Event;
+import otus.lib.event.EventStatus;
+import otus.lib.event.EventType;
+
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -17,17 +21,16 @@ public class AccountKafkaConsumerService {
     @Autowired
     private final AccountService accountService;
 
-//    public AccountKafkaConsumerService(AccountService accountService) {
-//        this.accountService = accountService;
-//    }
-
-    @KafkaListener(topics = "user", groupId = "billing-group")//, errorHandler = "handleKafkaException")
+    @KafkaListener(topics = {"user", "order"}, groupId = "billing-group")//, errorHandler = "handleKafkaException")
     public void listen(String message) throws JsonProcessingException {
         log.info("Received Message: " + message);
         ObjectMapper objectMapper = new ObjectMapper();
         Event event = objectMapper.readValue(message, Event.class);
 //        log.info(event.description());
         // Здесь можно добавить логику обработки сообщения
-        accountService.createAccount(event);
+
+        if (event.getStatus() == EventStatus.SUCCESS && Objects.equals(event.getSource(), "user")) {
+            if (event.getType() == EventType.USER_CREATE) {accountService.createAccount(event);}
+        }
     }
 }

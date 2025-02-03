@@ -5,21 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0cbd886b-c6dd-4d8d-8850-3bf3bdcb1fb2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/order/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/Application.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/lib/jwt/JwtController.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/lib/jwt/JwtController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/lib/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/lib/security/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/billing/src/main/java/otus/billing/AccountKafkaConsumerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/billing/src/main/java/otus/billing/AccountKafkaConsumerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/billing/src/main/java/otus/lib/event/EventProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/billing/src/main/java/otus/lib/event/EventProducer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/billing/src/main/java/otus/lib/exception/SrvExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/billing/src/main/java/otus/lib/exception/SrvExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/load_testing/order_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/load_testing/order_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/note/src/main/java/otus/lib/event/EventProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/note/src/main/java/otus/lib/event/EventProducer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/note/src/main/java/otus/lib/event/EventType.java" beforeDir="false" afterPath="$PROJECT_DIR$/note/src/main/java/otus/lib/event/EventType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/note/src/main/java/otus/lib/exception/ErrorType.java" beforeDir="false" afterPath="$PROJECT_DIR$/note/src/main/java/otus/lib/exception/ErrorType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/note/src/main/java/otus/lib/exception/SrvExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/note/src/main/java/otus/lib/exception/SrvExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/note/src/main/java/otus/note/NoteKafkaConsumerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/note/src/main/java/otus/note/NoteKafkaConsumerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/note/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/note/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/AppConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/lib/event/EventProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/lib/event/EventProducer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/lib/exception/SrvExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/lib/exception/SrvExceptionHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/lib/security/SecurityFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/lib/security/SecurityFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/order/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/order/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderKafkaConsumerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderKafkaConsumerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/otus/lib/event/EventProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/otus/lib/event/EventProducer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/otus/lib/exception/SrvExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/otus/lib/exception/SrvExceptionHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

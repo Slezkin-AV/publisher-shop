@@ -16,7 +16,7 @@ public class AppConfig {
     }
 
     @Bean
-    public String myTopic() {return "note";}
+    public String myTopic() {return "order";}
 
     @Bean
     public String accessSecret(){return "qBTmv4oXFFR2GwjexDJ4t6fsIUIUhhXqlktXjXdkcyygs8nPVEwMfo29VDRRepYDVV5IkIxBMzr7OEHXEHd37w==";}
