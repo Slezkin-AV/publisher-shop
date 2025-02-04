@@ -9,16 +9,48 @@ import faker
 import requests
 from requests.exceptions import HTTPError
 
-SERVICE_HOST='publisher.localdev.me'
-SERVICE_HOST1='order.localdev.me'
+USER_HOST='publisher.localdev.me'
+ORDER_HOST='order.localdev.me'
+ORDER_BILLING='billing.localdev.me'
 SERVICE_PORT=8000
-API_URL=f"http://{SERVICE_HOST}:{SERVICE_PORT}"
-API_URL1=f"http://{SERVICE_HOST1}:{SERVICE_PORT}"
+API_URL_USER=f"http://{USER_HOST}:{SERVICE_PORT}"
+API_URL_ORDER=f"http://{ORDER_HOST}:{SERVICE_PORT}"
+API_URL_BILLING=f"http://{ORDER_BILLING}:{SERVICE_PORT}"
 
 class OrderTest:
     users = {}
     logins = {}
     tokens = {}
+
+    def test_request(self, operation, url, header, json_data, param):
+        logging.info(f"test_request: on {url}")
+        try:
+            match operation:
+                case "get":
+                    resp = requests.get(url, headers=header, params=param)
+                    pass
+                case "put":
+                    resp = requests.post(url, headers=header, json=json_data, params=param)
+                    pass
+                case "post":
+                    resp = requests.post(url, headers=header, json=json_data, params=param)
+                    pass
+                case _:
+                    logging.info(f"test_request: no operation {operation}")
+                    return 
+            pass    
+        except HTTPError as err:
+            logging.error(f"Error: {err}")
+        except Exception as ex:
+            logging.error(f"Exception: {ex}")
+        else:
+            logging.info(f"responce: {resp}")
+            # logging.info(f"data: {resp.text}")
+            if resp.ok:
+                logging.info(f"response on on {url}: {resp.text}")
+                return resp
+            else:
+                logging.info(f"Error response on on {url}: {resp.status_code}") 
 
 
     def create_new_user(self):
@@ -32,7 +64,7 @@ class OrderTest:
         }
         logging.info(f"user : {user}")
         try:
-            resp = requests.post(API_URL + "/register",
+            resp = requests.post(API_URL_USER + "/register",
                 headers={'Contetn-Type': 'application/json'},
                 json=user)
         except HTTPError as err:
@@ -62,7 +94,7 @@ class OrderTest:
         lg = self.logins[id]
 
         try:
-            resp = requests.post(API_URL + "/login",
+            resp = requests.post(API_URL_USER + "/login",
                 headers={'Contetn-Type': 'application/json'},
                 json=lg)
         except HTTPError as err:
@@ -106,7 +138,7 @@ class OrderTest:
         # header = {"Authorization": f"Bearer {token}"}
         header = {"Contetn-Type": "application/json"}
         try:
-            resp = requests.post(API_URL1 + "/order",
+            resp = requests.post(API_URL_ORDER + "/order",
                 headers=header,
                 json=order)
         except HTTPError as err:
@@ -125,6 +157,18 @@ class OrderTest:
                 logging.info(f"Error response /order: {resp.status_code}")  
 
 
+    def increase_account(self, id, sum):
+        logging.info(f"increase_account: for user {id} on {sum}")
+        token = self.tokens[id]
+        account = {}
+        # header = {"Authorization": f"Bearer {token}"}
+        header = {"Contetn-Type": "application/json"}
+        resp = self.test_request("get", API_URL_BILLING + "/account/" + str(id), header, {}, {})
+        if resp:
+            resp = self.test_request("post", API_URL_BILLING + "/account/" + str(id) +"?amount=" + str(sum), header, {}, {})
+
+
+
 
 
 if __name__ == "__main__":
@@ -133,8 +177,10 @@ if __name__ == "__main__":
     logging.info("Test STARTING");
     test1 = OrderTest() 
     id = test1.create_new_user()
-    test1.login(id)
-    test1.send_order(id)
+    if id:
+        test1.login(id)
+        test1.increase_account(id, 1000)
+        # test1.send_order(id)
     logging.info("Test FINISHED");
 
 

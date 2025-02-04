@@ -1,9 +1,9 @@
 package otus.order;
 
-import otus.lib.event.EventType;
+import otus.lib.event.Event;
 
 public interface OrderServiceInterface {
     OrderDto createOrder(Order order);
     OrderDto getOrder(Long id);
-    OrderDto updateStatus(Long id, OrderStatus orderStatus);
+    OrderDto updateStatus(Event event);
 }

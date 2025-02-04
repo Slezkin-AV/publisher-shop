@@ -16,5 +16,6 @@ public class OrderDto {//extends Event {
     private Timestamp updatedAt;
     private OrderStatus orderStatus;
     private Long userId;
-    private double amount;
+    private Long amount;
+    private Double sum;
 }

@@ -21,6 +21,7 @@
         <module>billing</module>
         <module>note</module>
         <module>order</module>
+        <module>ware</module>
 <!--        <module>publisher</module>-->
     </modules>
 
@@ -38,6 +39,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
             <version>3.3.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+            <version>3.3.2</version>
         </dependency>
 
 

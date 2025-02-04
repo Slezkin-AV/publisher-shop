@@ -15,13 +15,13 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping("/order")
-    public ResponseEntity<OrderDto> createUser(@RequestBody Order order){
+    public ResponseEntity<OrderDto> createOrder(@RequestBody Order order){
         OrderDto savedOrder = orderService.createOrder(order);
         return new ResponseEntity<>(savedOrder, HttpStatus.CREATED);
     }
 
     @GetMapping("/order/{id}")
-    public ResponseEntity<OrderDto> createUser(@RequestPart Long id){
+    public ResponseEntity<OrderDto> getOrder(@RequestPart Long id){
         OrderDto savedOrder = orderService.getOrder(id);
         return new ResponseEntity<>(savedOrder, HttpStatus.CREATED);
     }

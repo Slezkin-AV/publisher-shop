@@ -3,8 +3,10 @@ package otus.lib.event;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Event {
@@ -13,9 +15,10 @@ public class Event {
     private EventStatus status;
     private String source;
     private String message;
-    private long userId;
-    private double amount;
-    private long orderId;
+    private Long userId;
+    private Long amount;
+    private Long orderId;
+    private Long wareId;
 
     public String key(){
         return message;

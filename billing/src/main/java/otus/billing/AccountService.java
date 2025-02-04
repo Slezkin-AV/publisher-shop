@@ -1,6 +1,5 @@
 package otus.billing;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import otus.lib.exception.ErrorType;
 import otus.lib.exception.SrvException;
 import otus.lib.event.Event;
 import otus.lib.event.EventProducer;
-import otus.lib.event.EventStatus;
 import otus.lib.event.EventType;
 
 @Slf4j
@@ -26,12 +24,14 @@ public class AccountService implements AccountServiceInterface {
     public AccountDto createAccount(Event event){
         Account account = new Account(event);
         accountRepository.save(account);
+
         // + to Kafka
+        event.setSource("billing");
+        event.setType(EventType.ACCOUNT_CREATE);
+        event.setMessage(EventType.ACCOUNT_CREATE.getDescription());
         try {
-            Event event1 = new Event(EventType.ACCOUNT_CREATE, EventStatus.SUCCESS,
-                    "billing","account created", account.getUserId(), -1,-1);
-            eventProducer.sendMessage(event1);
-        } catch( RuntimeException | JsonProcessingException ex) {
+            eventProducer.sendMessage(event);
+        } catch( RuntimeException ex) {
             log.info(String.valueOf(ex));
         }
         return AccountMapper.mapToAccountDto(account);
@@ -42,10 +42,19 @@ public class AccountService implements AccountServiceInterface {
         return AccountMapper.mapToAccountDto(account);
     }
 
-    public AccountDto updateAccount(long ig, double amount){
-        return new AccountDto();
+    public AccountDto updateAccount(long id, double sum){
+        AccountDto accountDto = getAccount(id);
+        accountDto.setSum(sum + accountDto.getSum());
+        accountRepository.save(AccountMapper.mapToAccount(accountDto));
+        return accountDto;
     }
 
+    public AccountDto cleanAccount(long id){
+        AccountDto accountDto = getAccount(id);
+        accountDto.setSum(0);
+        accountRepository.save(AccountMapper.mapToAccount(accountDto));
+        return accountDto;
+    }
     public void deleteAccount(long id){
         return;
     }

@@ -14,20 +14,22 @@ import otus.lib.event.Event;
 
 @Data
 @AllArgsConstructor
-//@NoArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(schema = "public")
 public class Account {//} implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @NonNull
-    private long userId;
-    private double amount;
+    private Long userId;
+    private double sum;
+
 
     public Account(Event event){
+        this.id = event.getUserId();
         this.userId = event.getUserId();
-        this.amount = event.getAmount();
+        this.sum = 0;
     }
 
 }

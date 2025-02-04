@@ -33,27 +33,33 @@ public class OrderService implements OrderServiceInterface {
     }
 
     @Override
-    public OrderDto updateStatus(Long id, OrderStatus orderStatus){
-        Order order = orderRepository.findById(id).orElseThrow(() -> new SrvException(ErrorType.ORD_NOT_FOUND));
-        order.setOrderStatus(orderStatus);
-        orderRepository.save(order);
+    public OrderDto updateStatus(Event event){
+        Order order = orderRepository.findById(event.getOrderId()).orElseThrow(() -> new SrvException(ErrorType.ORD_NOT_FOUND));
 
-        // + to Kafka
-        try {
-            EventType eventType = EventType.NONE;
-            if (Objects.requireNonNull(orderStatus) == OrderStatus.PAID) {
-                eventType = EventType.ORDER_PAID;
-            }
-
-            //если событие есть
-            if (eventType != EventType.NONE) {
-                Event event1 = new Event(eventType, EventStatus.SUCCESS,
-                        "order", eventType.getDescription(), order.getUserId(), order.getAmount(), order.getId());
-                eventProducer.sendMessage(event1);
-            }
-        } catch(RuntimeException | JsonProcessingException ex) {
-            log.info(String.valueOf(ex));
+        if (event.getType() == EventType.ACCOUNT_PAID) {
+            order.setOrderStatus(OrderStatus.PAID);
+            orderRepository.save(order);
         }
+
+//        event.setSource("order");
+//        event.setType(Eve);
+//
+//        // + to Kafka
+//        try {
+//            EventType eventType = EventType.NONE;
+//            if (Objects.requireNonNull(orderStatus) == OrderStatus.PAID) {
+//                eventType = EventType.ORDER_PAID;
+//            }
+//
+//            //если событие есть
+//            if (eventType != EventType.NONE) {
+//                Event event1 = new Event(eventType, EventStatus.SUCCESS,
+//                        "order", eventType.getDescription(), order.getUserId(), order.getAmount(), order.getId(), null);
+//                eventProducer.sendMessage(event1);
+//            }
+//        } catch(RuntimeException ex) {
+//            log.info(String.valueOf(ex));
+//        }
 
         return OrderMapper.mapToOrderDto(order);
     }
@@ -71,9 +77,9 @@ public class OrderService implements OrderServiceInterface {
         try {
             EventType eventType = EventType.ORDER_CREATED;
             Event event1 = new Event(eventType, EventStatus.SUCCESS,
-                    "order",eventType.getDescription(), order1.getUserId(), order1.getAmount(), order1.getId());
+                    "order",eventType.getDescription(), order1.getUserId(), order1.getAmount(), order1.getId(),null);
             eventProducer.sendMessage(event1);
-        } catch(RuntimeException | JsonProcessingException ex) {
+        } catch(RuntimeException ex) {
             log.info(String.valueOf(ex));
         }
 

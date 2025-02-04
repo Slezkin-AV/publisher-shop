@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "charts.fullname" . }}-config
+  labels:
+    {{- include "charts.labels" . | nindent 4 }}
+data:
+  POSTGRES_DB: {{ .Values.postgress.postgres_db }}
+  POSTGRES_USER: {{ .Values.postgress.postgres_user }}
+  POSTGRES_PASSWORD: {{ .Values.postgress.postgres_password }}
+  PGDATA: {{ .Values.postgress.pgdata }}
+
+
+  spring.datasource.url: {{ .Values.spring.datasource_url }}
+  spring.datasource.username: {{ .Values.postgress.postgres_user }}
+  spring.datasource.password: {{ .Values.postgress.postgres_password }}
+  jakarta.persistence.jdbc.url: {{ .Values.spring.jdbc_url }}
+
+  # This will drop any table in the database and create new ones base on the models
+  spring.jpa.hibernate.ddl-auto: {{ .Values.spring.ddl_auto }}
+

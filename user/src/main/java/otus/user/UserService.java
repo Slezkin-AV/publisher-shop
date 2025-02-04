@@ -33,9 +33,9 @@ public class UserService implements UserServiceInterface {
         User usr = userRepository.save(user);
         try {
             Event event = new Event(EventType.USER_CREATE, EventStatus.SUCCESS,
-                    "user", usr.getEmail(), usr.getId(), -1, -1);
+                    "user", EventType.USER_CREATE.getDescription(), usr.getId(), null, null, null);
             eventProducer.sendMessage(event);
-        }catch (RuntimeException | JsonProcessingException ex){
+        }catch (RuntimeException ex){
             log.info(String.valueOf(ex));
         }
         return UserMapper.mapToUserDto(usr);

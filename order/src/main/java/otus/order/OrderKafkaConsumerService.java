@@ -23,33 +23,26 @@ public class OrderKafkaConsumerService {
 
 
     @KafkaListener(topics = {"user", "billing"}, groupId = "order-group", errorHandler = "handleKafkaException")
-    public void listen(String message) throws JsonProcessingException {
+    public void listen(String message) {
         log.info("Received Message: " + message);
-        ObjectMapper objectMapper = new ObjectMapper();
-        Event event = objectMapper.readValue(message, Event.class);
-//        log.info(event.description());
-        // Здесь можно добавить логику обработки сообщения
+        Event event = null;
+        try{
+            ObjectMapper objectMapper = new ObjectMapper();
+            event = objectMapper.readValue(message, Event.class);
+            //log.info(event.description());
+        }catch(JsonProcessingException ex) {
+            log.error("Ошибка трансформации сообщения: {}", ex.getMessage());
+        }
+        assert event != null;
 
-        //предполагаем что ничего делать не надо
-        OrderStatus orderStatus = OrderStatus.NONE;
 
         // проверка оплаты счета
-        if (Objects.equals(event.getSource(), "billing")) {
+        if (Objects.equals(event.getSource(), "billing") && (event.getStatus() == EventStatus.SUCCESS)) {
             if (event.getType() == EventType.ACCOUNT_PAID) {
-                if (event.getStatus() == EventStatus.SUCCESS) {
-                    orderStatus = OrderStatus.PAID;
-                } else {
-                    orderStatus = OrderStatus.REJECTED;
-                }
+                // обновляем статус по событию
+                orderService.updateStatus(event);
             }
         }
 
-        //если на событие все же надо реагировать
-        if (orderStatus != OrderStatus.NONE) {
-            Event event1 = new Event();
-            orderService.updateStatus(event.getOrderId(), orderStatus);
-
-
-        }
     }
 }

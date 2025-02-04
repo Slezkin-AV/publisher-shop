@@ -1,17 +1,17 @@
 ---
-# Source: note/templates/configmap.yaml
+# Source: ware/templates/configmap.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: note-config
+  name: ware-config
   labels:
-    helm.sh/chart: note-0.1.0
-    app.kubernetes.io/name: note
-    app.kubernetes.io/instance: note
+    helm.sh/chart: ware-0.1.0
+    app.kubernetes.io/name: ware
+    app.kubernetes.io/instance: ware
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 data:
-  POSTGRES_DB: note_db
+  POSTGRES_DB: order_db
   POSTGRES_USER: admin
   POSTGRES_PASSWORD: passadmin
   PGDATA: /var/lib/postgresql/data/pgdata
@@ -25,15 +25,15 @@ data:
   # This will drop any table in the database and create new ones base on the models
   spring.jpa.hibernate.ddl-auto: create-drop
 ---
-# Source: note/templates/service.yaml
+# Source: ware/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: note
+  name: ware
   labels:
-    helm.sh/chart: note-0.1.0
-    app.kubernetes.io/name: note
-    app.kubernetes.io/instance: note
+    helm.sh/chart: ware-0.1.0
+    app.kubernetes.io/name: ware
+    app.kubernetes.io/instance: ware
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -51,32 +51,32 @@ spec:
       protocol: TCP
       name: metrics
   selector:
-    app.kubernetes.io/name: note
-    app.kubernetes.io/instance: note
+    app.kubernetes.io/name: ware
+    app.kubernetes.io/instance: ware
 ---
-# Source: note/templates/deployment.yaml
+# Source: ware/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: note
+  name: ware
   labels:
-    helm.sh/chart: note-0.1.0
-    app.kubernetes.io/name: note
-    app.kubernetes.io/instance: note
+    helm.sh/chart: ware-0.1.0
+    app.kubernetes.io/name: ware
+    app.kubernetes.io/instance: ware
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: note
-      app.kubernetes.io/instance: note
+      app.kubernetes.io/name: ware
+      app.kubernetes.io/instance: ware
   template:
     metadata:
       labels:
-        helm.sh/chart: note-0.1.0
-        app.kubernetes.io/name: note
-        app.kubernetes.io/instance: note
+        helm.sh/chart: ware-0.1.0
+        app.kubernetes.io/name: ware
+        app.kubernetes.io/instance: ware
         app.kubernetes.io/version: "1.16.0"
         app.kubernetes.io/managed-by: Helm
     spec:
@@ -84,14 +84,14 @@ spec:
       securityContext:
         {}
       containers:
-        - name: note
+        - name: ware
           securityContext:
             {}
-          image: "slezkin71/microservice:note_v01"
+          image: "slezkin71/microservice:ware_v01"
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
-                name: note-config
+                name: ware-config
           ports:
             - name: http
               containerPort: 8000
@@ -115,53 +115,53 @@ spec:
             requests:
               cpu: 500m
               memory: 512Mi
-        - name: note-db
+        - name: ware-db
           securityContext:
             {}
           image: "postgres"
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
-                name: note-config
+                name: ware-config
           ports:
             - name: http
               containerPort: 5432
               protocol: TCP
 ---
-# Source: note/templates/ingress.yaml
+# Source: ware/templates/ingress.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: note
+  name: ware
   labels:
-    helm.sh/chart: note-0.1.0
-    app.kubernetes.io/name: note
-    app.kubernetes.io/instance: note
+    helm.sh/chart: ware-0.1.0
+    app.kubernetes.io/name: ware
+    app.kubernetes.io/instance: ware
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
   ingressClassName: nginx
   rules:
-    - host: "note.localdev.me"
+    - host: "ware.localdev.me"
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: note
+                name: ware
                 port:
                   number: 8000
 ---
-# Source: note/templates/servicemonitor.yaml
+# Source: ware/templates/servicemonitor.yaml
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: note-monitor
+  name: ware-monitor
   labels:
-    helm.sh/chart: note-0.1.0
-    app.kubernetes.io/name: note
-    app.kubernetes.io/instance: note
+    helm.sh/chart: ware-0.1.0
+    app.kubernetes.io/name: ware
+    app.kubernetes.io/instance: ware
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
     release: kube-prometheus-stack
@@ -174,8 +174,8 @@ spec:
       interval: 60s
   selector:
     matchLabels:
-      app.kubernetes.io/name: note
-      app.kubernetes.io/instance: note
+      app.kubernetes.io/name: ware
+      app.kubernetes.io/instance: ware
   namespaceSelector:
     matchNames:
       - pub

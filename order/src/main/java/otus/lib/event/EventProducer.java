@@ -25,9 +25,15 @@ public class EventProducer {
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
 
-    public void sendMessage(Event event) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String message = objectMapper.writeValueAsString(event);
+    public void sendMessage(Event event){//} throws JsonProcessingException {
+        String message = null;
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            message = objectMapper.writeValueAsString(event);
+        } catch(JsonProcessingException ex) {
+            log.error("Ошибка трансформации сообщения: {}", ex.getMessage());
+        }
+        assert message != null;
         log.info("Sending event: {}", message);
         try {
             CompletableFuture<SendResult<String, String>> result = kafkaTemplate.send(TOPIC, event.key(), message);

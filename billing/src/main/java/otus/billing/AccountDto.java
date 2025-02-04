@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccountDto {
-    private long id;
-    private long userId;
-    private double amount;
-
+    private Long id;
+    private Long userId;
+    private double sum;
 }

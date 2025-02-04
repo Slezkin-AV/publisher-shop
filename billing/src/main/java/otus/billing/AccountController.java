@@ -37,15 +37,19 @@ public class AccountController {
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
-    // Build Update User REST API
-    @PutMapping("/account/{id}")
-    public ResponseEntity<AccountDto> updateUser(@PathVariable("id") long id,
-                                                 @RequestParam double amount){
-        AccountDto updatedAccount = accountService.updateAccount(id,amount);
+    @PostMapping("/account/{id}")
+    public ResponseEntity<AccountDto> updateAccount(@PathVariable("id") long id,
+                                                 @RequestParam double sum){
+        AccountDto updatedAccount = accountService.updateAccount(id,sum);
         return new ResponseEntity<>(updatedAccount, HttpStatus.OK);
     }
 
-    // Build Delete User REST API
+    @PostMapping("/account/{id}/clean")
+    public ResponseEntity<AccountDto> cleanAccount(@PathVariable("id") long id){
+        AccountDto updatedAccount = accountService.cleanAccount(id);
+        return new ResponseEntity<>(updatedAccount, HttpStatus.OK);
+    }
+
     @DeleteMapping("/account/{id}")
     public ResponseEntity<String> deleteAccount(@PathVariable("id") long id){
         accountService.deleteAccount(id);

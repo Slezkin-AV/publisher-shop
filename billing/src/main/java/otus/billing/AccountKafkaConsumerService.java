@@ -22,10 +22,18 @@ public class AccountKafkaConsumerService {
     private final AccountService accountService;
 
     @KafkaListener(topics = {"user", "order"}, groupId = "billing-group")//, errorHandler = "handleKafkaException")
-    public void listen(String message) throws JsonProcessingException {
+    public void listen(String message) {
         log.info("Received Message: " + message);
-        ObjectMapper objectMapper = new ObjectMapper();
-        Event event = objectMapper.readValue(message, Event.class);
+        Event event = null;
+        try{
+            ObjectMapper objectMapper = new ObjectMapper();
+            event = objectMapper.readValue(message, Event.class);
+            //log.info(event.description());
+        }catch(JsonProcessingException ex) {
+            log.error("Ошибка трансформации сообщения: {}", ex.getMessage());
+        }
+        assert event != null;
+
 //        log.info(event.description());
         // Здесь можно добавить логику обработки сообщения
 

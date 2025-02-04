@@ -9,7 +9,7 @@ public class AccountMapper {
         AccountDto accountDto = new AccountDto(
                 account.getId(),
                 account.getUserId(),
-                account.getAmount()
+                account.getSum()
         );
 //        //случайное замедление
 //        Random random = new Random();
@@ -28,7 +28,7 @@ public class AccountMapper {
         Account account = new Account(
                 accountDto.getId(),
                 accountDto.getUserId(),
-                accountDto.getAmount()
+                accountDto.getSum()
         );
         return account;
     }
