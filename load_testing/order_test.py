@@ -47,10 +47,10 @@ class OrderTest:
             logging.info(f"responce: {resp}")
             # logging.info(f"data: {resp.text}")
             if resp.ok:
-                logging.info(f"response on on {url}: {resp.text}")
+                logging.info(f"response on {url}: {resp.text}")
                 return resp
             else:
-                logging.info(f"Error response on on {url}: {resp.status_code}") 
+                logging.error(f"Error response on on {url}: {resp.status_code}") 
 
 
     def create_new_user(self):
@@ -63,67 +63,46 @@ class OrderTest:
             "password": "123"
         }
         logging.info(f"user : {user}")
-        try:
-            resp = requests.post(API_URL_USER + "/register",
-                headers={'Contetn-Type': 'application/json'},
-                json=user)
-        except HTTPError as err:
-            logging.error(f"Error: {err}")
-        except Exception as ex:
-            logging.error(f"Exception: {ex}")
-        else:
-            logging.info(f"responce: {resp}")
-            logging.info(f"data: {resp.text}")
-            if resp.ok:
-                id = resp.json()["id"]
-                self.users[id]=user
-                login = {
-                    "login": user['login'],
-                    "password": user['password']
+        header={'Contetn-Type': 'application/json'}
+        resp = self.test_request("post", API_URL_USER + "/register", header, user, {})
+        if resp and resp.ok:
+            id = resp.json()["id"]
+            self.users[id]=user
+            login = {
+                "login": user['login'],
+                "password": user['password']
                 }
-                self.logins[id]=login
-                return id
-            else:
-                logging.info(f"Error response /register: {resp.status_code}")
-        # else:
-            # logging.info(f"Error response /register: {resp.text}")
+            self.logins[id]=login
+            return id
 
 
     def login(self, id):
         logging.info(f"login for id: {id}")
         lg = self.logins[id]
-
-        try:
-            resp = requests.post(API_URL_USER + "/login",
-                headers={'Contetn-Type': 'application/json'},
-                json=lg)
-        except HTTPError as err:
-            logging.error(f"Error: {err}")
-        except Exception as ex:
-            logging.error(f"Exception: {ex}")
-        else:
-            logging.info(f"responce: {resp}")
-            # logging.info(f"data: {resp.text}")
-            if resp.ok:
-                token = resp.json()["accessToken"]
-                self.tokens[id] = token
-                return token
-            else:
-                logging.info(f"Error response /login: {resp.status_code}")
+        header={'Contetn-Type': 'application/json'}
+        resp = self.test_request("post", API_URL_USER + "/login", header, lg, {})
+        if resp and resp.ok:
+            token = resp.json()["accessToken"]
+            self.tokens[id] = token
+            return token
 
 
     def new_order(self, id):
         order = {
             "userId": id,
-            "amount": "10"
+            "amount": "10",
+            "sum":"450"
         }
         return order
 
 
     def send_order(self, id):
-
+        
         order = self.new_order(id)
         logging.info(f"send order : {order}")
+
+        header={'Contetn-Type': 'application/json'}
+        # header = {"Authorization": f"Bearer {token}"}
 
         try: 
             lg = self.logins[id]
@@ -135,26 +114,10 @@ class OrderTest:
             logging.info(f"order for login: {lg}")
             # with token: {token}")
 
-        # header = {"Authorization": f"Bearer {token}"}
-        header = {"Contetn-Type": "application/json"}
-        try:
-            resp = requests.post(API_URL_ORDER + "/order",
-                headers=header,
-                json=order)
-        except HTTPError as err:
-            logging.error(f"Error: {err}")
-        except Exception as ex:
-            logging.error(f"Exception: {ex}")
-        else:
-            logging.info(f"responce: {resp}")
-            # logging.info(f"data: {resp.text}")
-            if resp.ok:
-                # token = resp.json()["accessToken"]
-                # self.tokens[id] = token
-                # return token
-                logging.info(f"response /order: {resp.text}")
-            else:
-                logging.info(f"Error response /order: {resp.status_code}")  
+        resp = self.test_request("post", API_URL_ORDER + "/order", header, order, {})
+        if resp and resp.ok:
+            pass
+
 
 
     def increase_account(self, id, sum):
@@ -165,9 +128,7 @@ class OrderTest:
         header = {"Contetn-Type": "application/json"}
         resp = self.test_request("get", API_URL_BILLING + "/account/" + str(id), header, {}, {})
         if resp:
-            resp = self.test_request("post", API_URL_BILLING + "/account/" + str(id) +"?amount=" + str(sum), header, {}, {})
-
-
+            resp = self.test_request("post", API_URL_BILLING + "/account/" + str(id) +"?sum=" + str(sum), header, {}, {})
 
 
 
@@ -180,7 +141,9 @@ if __name__ == "__main__":
     if id:
         test1.login(id)
         test1.increase_account(id, 1000)
-        # test1.send_order(id)
+        test1.send_order(id)
+        test1.send_order(id)
+        test1.send_order(id)
     logging.info("Test FINISHED");
 
 

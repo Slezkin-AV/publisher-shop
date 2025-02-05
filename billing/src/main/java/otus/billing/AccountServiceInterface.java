@@ -9,4 +9,5 @@ public interface AccountServiceInterface {
     AccountDto updateAccount(long ig, double amount);
     AccountDto cleanAccount(long ig);
     void deleteAccount(long id);
+    AccountDto payAccount(Event event);
 }

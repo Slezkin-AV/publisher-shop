@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class AccountDto {
     private Long id;
     private Long userId;
-    private double sum;
+    private Double sum;
 }

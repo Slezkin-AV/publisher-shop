@@ -35,10 +35,22 @@ public class AccountKafkaConsumerService {
         assert event != null;
 
 //        log.info(event.description());
-        // Здесь можно добавить логику обработки сообщения
+        if( event != null) {
 
-        if (event.getStatus() == EventStatus.SUCCESS && Objects.equals(event.getSource(), "user")) {
-            if (event.getType() == EventType.USER_CREATE) {accountService.createAccount(event);}
+            //создаем счет при создании user
+            if (event.getStatus() == EventStatus.SUCCESS && Objects.equals(event.getSource(), "user")) {
+                if (event.getType() == EventType.USER_CREATE) {
+                    accountService.createAccount(event);
+                }
+            }
+
+            //оплата order
+            if (event.getStatus() == EventStatus.SUCCESS && Objects.equals(event.getSource(), "order")) {
+                if (event.getType() == EventType.ORDER_CREATED) {
+                    accountService.payAccount(event);
+                }
+            }
         }
+
     }
 }

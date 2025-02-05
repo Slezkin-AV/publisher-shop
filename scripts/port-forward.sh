@@ -4,7 +4,7 @@ set -e
 
 for proc in `pgrep -f port-forward`
 do
-  echo "killing " `ps -p $proc --no-headers`
+  echo "killing " `ps u --no-headers -p $proc`
   echo kill -9 $proc
 done
 

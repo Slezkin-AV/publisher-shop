@@ -4,8 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum EventType {
-    USER_CREATE("User creating"),
-    ACCOUNT_CREATE("Account creating"),
+    USER_CREATE("User created"),
+    ACCOUNT_CREATE("Account created"),
+    ACCOUNT_UPDATE("Account updated"),
     ACCOUNT_PAID("Account paid"),
     ORDER_CREATED("Order created"),
     ORDER_PAID("Order paid"),

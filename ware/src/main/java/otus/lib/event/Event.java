@@ -21,6 +21,7 @@ public class Event {
     private Long amount;
     private Long orderId;
     private Long wareId;
+    private Double sum;
 
     public String key(){
         return message;

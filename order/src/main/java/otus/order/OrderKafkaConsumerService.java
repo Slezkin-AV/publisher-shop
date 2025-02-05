@@ -26,23 +26,21 @@ public class OrderKafkaConsumerService {
     public void listen(String message) {
         log.info("Received Message: " + message);
         Event event = null;
-        try{
+        try {
             ObjectMapper objectMapper = new ObjectMapper();
             event = objectMapper.readValue(message, Event.class);
             //log.info(event.description());
-        }catch(JsonProcessingException ex) {
+        } catch (JsonProcessingException ex) {
             log.error("Ошибка трансформации сообщения: {}", ex.getMessage());
         }
         assert event != null;
+        if (event != null) {
 
-
-        // проверка оплаты счета
-        if (Objects.equals(event.getSource(), "billing") && (event.getStatus() == EventStatus.SUCCESS)) {
-            if (event.getType() == EventType.ACCOUNT_PAID) {
+            // обновлем статус счета
+            if (Objects.equals(event.getSource(), "billing") && (event.getType() == EventType.ACCOUNT_PAID)) {
                 // обновляем статус по событию
                 orderService.updateStatus(event);
             }
         }
-
     }
 }

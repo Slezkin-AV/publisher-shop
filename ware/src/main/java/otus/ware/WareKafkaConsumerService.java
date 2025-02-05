@@ -35,14 +35,16 @@ public class WareKafkaConsumerService {
         }
         assert event != null;
 
-        // проверка оплаты счета
-        if (Objects.equals(event.getSource(), "billing") && (event.getStatus() == EventStatus.SUCCESS)) {
-            if (event.getType() == EventType.ACCOUNT_PAID) {
+        if( event != null) {
+            // проверка оплаты счета
+            if (Objects.equals(event.getSource(), "billing") && (event.getStatus() == EventStatus.SUCCESS)) {
+                if (event.getType() == EventType.ACCOUNT_PAID) {
 
-                // резервируем товар, если счет оплачен
-                // если резервирование успешно - там и передаем в доставку
-                // иначе - отменяем и оплату, и счет в целом
-                boolean reserved = wareService.reserveWare(event);
+                    // резервируем товар, если счет оплачен
+                    // если резервирование успешно - там и передаем в доставку
+                    // иначе - отменяем и оплату, и счет в целом
+                    boolean reserved = wareService.reserveWare(event);
+                }
             }
         }
     }

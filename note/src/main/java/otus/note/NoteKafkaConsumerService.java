@@ -30,8 +30,9 @@ public class NoteKafkaConsumerService {
             log.error("Ошибка трансформации сообщения: {}", ex.getMessage());
         }
         assert event != null;
+        if( event != null) {
 //        log.info(event.description());
-        // Здесь можно добавить логику обработки сообщения
-        noteService.addNote(new Note(event));
+            noteService.addNote(new Note(event));
+        }
     }
 }

@@ -23,13 +23,13 @@ public class Account {//} implements UserDetails {
     private Long id;
     @NonNull
     private Long userId;
-    private double sum;
+    private Double sum;
 
 
     public Account(Event event){
         this.id = event.getUserId();
         this.userId = event.getUserId();
-        this.sum = 0;
+        this.sum = event.getSum();
     }
 
 }

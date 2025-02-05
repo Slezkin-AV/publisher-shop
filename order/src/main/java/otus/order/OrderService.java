@@ -36,30 +36,26 @@ public class OrderService implements OrderServiceInterface {
     public OrderDto updateStatus(Event event){
         Order order = orderRepository.findById(event.getOrderId()).orElseThrow(() -> new SrvException(ErrorType.ORD_NOT_FOUND));
 
-        if (event.getType() == EventType.ACCOUNT_PAID) {
+//        switch (event.getStatus()) {
+//            case EventType.ACCOUNT_PAID:
+//        }
+
+        if ((event.getType() == EventType.ACCOUNT_PAID) && (event.getStatus() == EventStatus.SUCCESS)) {
             order.setOrderStatus(OrderStatus.PAID);
-            orderRepository.save(order);
+            event.setType(EventType.ORDER_PAID);
+        }
+        if ((event.getType() == EventType.ACCOUNT_PAID) && (event.getStatus() == EventStatus.ERROR)){
+            order.setOrderStatus(OrderStatus.REJECTED);
+            event.setType(EventType.ORDER_CANCELED);
         }
 
-//        event.setSource("order");
-//        event.setType(Eve);
-//
-//        // + to Kafka
-//        try {
-//            EventType eventType = EventType.NONE;
-//            if (Objects.requireNonNull(orderStatus) == OrderStatus.PAID) {
-//                eventType = EventType.ORDER_PAID;
-//            }
-//
-//            //если событие есть
-//            if (eventType != EventType.NONE) {
-//                Event event1 = new Event(eventType, EventStatus.SUCCESS,
-//                        "order", eventType.getDescription(), order.getUserId(), order.getAmount(), order.getId(), null);
-//                eventProducer.sendMessage(event1);
-//            }
-//        } catch(RuntimeException ex) {
-//            log.info(String.valueOf(ex));
-//        }
+        orderRepository.save(order);
+
+        event.setSource("order");
+        event.setMessage(event.getType().getDescription());
+
+        // + to Kafka
+        eventProducer.sendMessage(event);
 
         return OrderMapper.mapToOrderDto(order);
     }
@@ -77,7 +73,7 @@ public class OrderService implements OrderServiceInterface {
         try {
             EventType eventType = EventType.ORDER_CREATED;
             Event event1 = new Event(eventType, EventStatus.SUCCESS,
-                    "order",eventType.getDescription(), order1.getUserId(), order1.getAmount(), order1.getId(),null);
+                    "order",eventType.getDescription(), order1.getUserId(), order1.getAmount(), order1.getId(),null, order1.getSum());
             eventProducer.sendMessage(event1);
         } catch(RuntimeException ex) {
             log.info(String.valueOf(ex));

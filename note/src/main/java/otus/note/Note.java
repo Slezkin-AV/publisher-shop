@@ -20,7 +20,7 @@ public class Note extends Event {
     public Note(Event event){
         super(event.getType(), event.getStatus(),
                 event.getSource(), event.getMessage(), event.getUserId(),
-                event.getAmount(), event.getOrderId(),event.getWareId());
+                event.getAmount(), event.getOrderId(),event.getWareId(), event.getSum());
     }
 
 }
