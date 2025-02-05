@@ -51,6 +51,7 @@ public class AccountService implements AccountServiceInterface {
         accountDto.setSum(sum);
         accountRepository.save(AccountMapper.mapToAccount(accountDto));
 
+        // + to Kafka
         eventProducer.sendMessage(new Event(EventType.ACCOUNT_UPDATE, EventStatus.SUCCESS, "billing",
                 EventType.ACCOUNT_UPDATE.getDescription(),
                 id, null,null,null, sum));
@@ -74,6 +75,7 @@ public class AccountService implements AccountServiceInterface {
 
             } else {event.setStatus(EventStatus.ERROR);}
         } else {event.setStatus(EventStatus.ERROR);}
+        // + to Kafka
         eventProducer.sendMessage(event);
         return accountDto;
     }
@@ -90,6 +92,29 @@ public class AccountService implements AccountServiceInterface {
             accountRepository.deleteById(id);
         }
         return;
+    }
+
+
+    public AccountDto cashBackAccount(Event event){
+        AccountDto accountDto = getAccount(event.getUserId());
+        double sum = 0.0;
+        if(event.getSum() != null){
+            sum += event.getSum();
+        }
+        if(accountDto.getSum() != null) {
+            sum += accountDto.getSum();
+        }
+        accountDto.setSum(sum);
+        accountRepository.save(AccountMapper.mapToAccount(accountDto));
+
+        event.setSource("billing");
+        event.setStatus(EventStatus.SUCCESS);
+        event.setType(EventType.ACCOUNT_UPDATE);
+        event.setMessage(EventType.ACCOUNT_UPDATE.getDescription());
+        // + to Kafka
+        eventProducer.sendMessage(event);
+
+        return accountDto;
     }
 
     public void cleanAll(){

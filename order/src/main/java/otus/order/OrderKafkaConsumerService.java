@@ -37,7 +37,9 @@ public class OrderKafkaConsumerService {
         if (event != null) {
 
             // обновлем статус счета
-            if (Objects.equals(event.getSource(), "billing") && (event.getType() == EventType.ACCOUNT_PAID)) {
+            if ((Objects.equals(event.getSource(), "billing") && (event.getType() == EventType.ACCOUNT_PAID)) //если прошла оплата
+                || (Objects.equals(event.getSource(), "ware") && (event.getStatus() == EventStatus.ERROR))) //если товара на складе нет
+            {
                 // обновляем статус по событию
                 orderService.updateStatus(event);
             }

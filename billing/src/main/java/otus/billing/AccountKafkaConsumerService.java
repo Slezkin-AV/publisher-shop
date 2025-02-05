@@ -21,7 +21,7 @@ public class AccountKafkaConsumerService {
     @Autowired
     private final AccountService accountService;
 
-    @KafkaListener(topics = {"user", "order"}, groupId = "billing-group")//, errorHandler = "handleKafkaException")
+    @KafkaListener(topics = {"user", "order", "ware"}, groupId = "billing-group")//, errorHandler = "handleKafkaException")
     public void listen(String message) {
         log.info("Received Message: " + message);
         Event event = null;
@@ -49,6 +49,12 @@ public class AccountKafkaConsumerService {
                 if (event.getType() == EventType.ORDER_CREATED) {
                     accountService.payAccount(event);
                 }
+            }
+
+            //возврат денег
+            if(Objects.equals(event.getSource(), "ware") && (event.getStatus() == EventStatus.ERROR)) //если товара на складе нет
+            {
+                accountService.cashBackAccount(event);
             }
         }
 

@@ -13,9 +13,8 @@ public enum EventType {
     ORDER_RESERVED("Reserved"),
     ORDER_DELIVERED("Delivered"),
     ORDER_CANCELED("Order canceled"),
-    RESERVE_CREATE("Reserve sucsess"),
-    RESERVE_FAILED("Reserve failed"),
-    DELIVER_FAILED("Not delivered"),
+    RESERVE_CREATING("Reserve creating"),
+    DELIVERING("Delivering"),
     NONE("No event")
     ;
     EventType(String description) {

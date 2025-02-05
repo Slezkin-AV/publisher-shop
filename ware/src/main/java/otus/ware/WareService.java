@@ -1,6 +1,5 @@
 package otus.ware;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +10,6 @@ import otus.lib.event.EventStatus;
 import otus.lib.event.EventType;
 import otus.lib.exception.ErrorType;
 import otus.lib.exception.SrvException;
-
-import java.util.Objects;
 
 
 @Slf4j
@@ -69,37 +66,48 @@ public class WareService implements WareServiceInterface {
 
     public boolean reserveWare(Event event){
         boolean res = false;
-        WareDto wareDto = getWare(event.getWareId());
 
         //готовим событие к отправке
         event.setSource("ware");
-        event.setWareId(wareDto.getId());
+        event.setType(EventType.RESERVE_CREATING);
+        event.setMessage(EventType.RESERVE_CREATING.getDescription());
 
-        long amount = wareDto.getAmount() - event.getAmount();
-        if (amount >= 0) { // есть еще порох в пороховницах - списываем и отправляем событие
-            wareDto.setAmount(amount);
-            wareRepository.save(WareMapper.mapToWare(wareDto));
-            event.setType(EventType.RESERVE_CREATE);
-            eventProducer.sendMessage(event);
-            res = true;
-        }else { // отстатка на складе недостаточно, отменяем оплату и счет в целом
-            event.setStatus(EventStatus.ERROR);
-            event.setType(EventType.RESERVE_FAILED);
-            eventProducer.sendMessage(event);
-        }
+        if((event.getWareId() != null) && (event.getAmount() != null)) {
+
+            WareDto wareDto = getWare(event.getWareId());
+            if(wareDto.getAmount() != null) {
+                long amount = wareDto.getAmount() - event.getAmount();
+                if (amount >= 0) { // есть еще порох в пороховницах - списываем и отправляем событие
+                    wareDto.setAmount(amount);
+                    wareRepository.save(WareMapper.mapToWare(wareDto));
+                    res = true;
+                } else { // отстатка на складе недостаточно, отменяем оплату и счет в целом
+                    event.setStatus(EventStatus.ERROR);
+                }
+            }else{event.setStatus(EventStatus.ERROR);}
+        }else {event.setStatus(EventStatus.ERROR);}
+        eventProducer.sendMessage(event);
         return res;
     }
 
     public void cleanAll(){
         wareRepository.deleteAll();
-        wareTypeRepository.deleteAll();
-        WareType wareType = new WareType();
-        //формируем товары по умолчанию
-        for( int i =0; i<10; i++){
-            wareType.setWareName("Товар " + String.valueOf(i));
-            wareType.setPrice(100 + i*10);
-            wareTypeRepository.save(wareType);
+        for(int i=0; i<10; i++){
+            Ware ware = new Ware();
+            ware.setWareName("Товар " + (i+1));
+            ware.setAmount(50L);
+            ware.setPrice(100.0);
+            wareRepository.save(ware);
         }
+
+//        wareTypeRepository.deleteAll();
+//        WareType wareType = new WareType();
+//        //формируем товары по умолчанию
+//        for( int i =0; i<10; i++){
+//            wareType.setWareName("Товар " + i);
+//            wareType.setPrice(100 + i*10);
+//            wareTypeRepository.save(wareType);
+//        }
     }
 
 }

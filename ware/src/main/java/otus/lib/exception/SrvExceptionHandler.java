@@ -31,10 +31,11 @@ public class SrvExceptionHandler {
     }
 
     @Bean
-    public KafkaListenerErrorHandler handleKafkaException(){ //(DeadLetterPublishingRecoverer recoverer) {
+    public KafkaListenerErrorHandler handleKafkaException() { //(DeadLetterPublishingRecoverer recoverer) {
         return (message, exception) -> {
             // Логика обработки ошибки
-            if (message.getHeaders().get(KafkaHeaders.DELIVERY_ATTEMPT, Integer.class) > 9) {
+            if ((message.getHeaders().get(KafkaHeaders.DELIVERY_ATTEMPT, Integer.class) != null)
+                && (message.getHeaders().get(KafkaHeaders.DELIVERY_ATTEMPT, Integer.class) > 9)) {
 //                recoverer.accept(message.getHeaders().get(KafkaHeaders.RAW_DATA, ConsumerRecord.class), exception);
                 return "FAILED sending " + message.getHeaders();
             }

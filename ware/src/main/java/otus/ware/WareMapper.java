@@ -8,7 +8,9 @@ public class WareMapper {
         return new WareDto(
                 ware.getId(),
                 ware.getWareType(),
-                ware.getAmount()
+                ware.getAmount(),
+                ware.getWareName(),
+                ware.getPrice()
         );
     }
 
@@ -17,7 +19,9 @@ public class WareMapper {
         return new Ware(
                 wareDto.getId(),
                 wareDto.getWareType(),
-                wareDto.getAmount()
+                wareDto.getAmount(),
+                wareDto.getWareName(),
+                wareDto.getPrice()
         );
     }
 }

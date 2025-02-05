@@ -44,7 +44,8 @@ public class OrderService implements OrderServiceInterface {
             order.setOrderStatus(OrderStatus.PAID);
             event.setType(EventType.ORDER_PAID);
         }
-        if ((event.getType() == EventType.ACCOUNT_PAID) && (event.getStatus() == EventStatus.ERROR)){
+        if ((event.getType() == EventType.ACCOUNT_PAID) && (event.getStatus() == EventStatus.ERROR)
+            || (event.getType() == EventType.RESERVE_CREATING) && (event.getStatus() == EventStatus.ERROR) ){
             order.setOrderStatus(OrderStatus.REJECTED);
             event.setType(EventType.ORDER_CANCELED);
         }
@@ -73,7 +74,7 @@ public class OrderService implements OrderServiceInterface {
         try {
             EventType eventType = EventType.ORDER_CREATED;
             Event event1 = new Event(eventType, EventStatus.SUCCESS,
-                    "order",eventType.getDescription(), order1.getUserId(), order1.getAmount(), order1.getId(),null, order1.getSum());
+                    "order",eventType.getDescription(), order1.getUserId(), order1.getAmount(), order1.getId(),order1.getWareId(), order1.getSum());
             eventProducer.sendMessage(event1);
         } catch(RuntimeException ex) {
             log.info(String.valueOf(ex));

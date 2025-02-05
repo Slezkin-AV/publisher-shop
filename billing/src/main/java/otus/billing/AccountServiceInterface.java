@@ -10,4 +10,5 @@ public interface AccountServiceInterface {
     AccountDto cleanAccount(long ig);
     void deleteAccount(long id);
     AccountDto payAccount(Event event);
+    AccountDto cashBackAccount(Event event);
 }

@@ -13,4 +13,6 @@ public class WareDto {//extends Event {
     private Long id;
     private Long wareType;
     private Long amount;
+    private String wareName;
+    private Double price;
 }

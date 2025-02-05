@@ -37,6 +37,7 @@ public class Order {// extends Event {
     private Long userId;
     private Long amount;
     private Double sum;
+    private Long wareId;
 
     @PrePersist
     private void onCreate(){

@@ -16,11 +16,11 @@ public class Ware {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
     private Long wareType;
 
     @NonNull
 //    @PositiveOrZero
     private Long amount;
-
+    private String wareName;
+    private Double price;
 }

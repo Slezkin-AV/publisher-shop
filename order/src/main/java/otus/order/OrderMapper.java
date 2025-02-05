@@ -21,7 +21,8 @@ public class OrderMapper {
                 order.getOrderStatus(),
                 order.getUserId(),
                 order.getAmount(),
-                order.getSum()
+                order.getSum(),
+                order.getWareId()
         );
     }
 
@@ -34,7 +35,8 @@ public class OrderMapper {
                 orderDto.getOrderStatus(),
                 orderDto.getUserId(),
                 orderDto.getAmount(),
-                orderDto.getSum()
+                orderDto.getSum(),
+                orderDto.getWareId()
         );
     }
 }

@@ -52,6 +52,6 @@ public class WareController {
     @PostMapping("/clean")
     public String cleanAll(){
         wareService.cleanAll();
-        return "Orders Cleaned";
+        return "Ware Cleaned";
     }
 }

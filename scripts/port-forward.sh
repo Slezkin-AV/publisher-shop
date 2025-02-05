@@ -2,10 +2,10 @@
 
 set -e
 
-for proc in `pgrep -f port-forward`
+for proc in `pgrep -f "port-forward -n (mon|ing)"`
 do
-  echo "killing " `ps u --no-headers -p $proc`
-  echo kill -9 $proc
+  echo "killing " `ps -f --no-headers -p $proc`
+  kill -9 $proc
 done
 
 kubectl port-forward -n ingress-nginx service/ingress-nginx-controller 8000:80 &
