@@ -1,0 +1,181 @@
+---
+# Source: delivery/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: delivery-config
+  labels:
+    helm.sh/chart: delivery-0.1.0
+    app.kubernetes.io/name: delivery
+    app.kubernetes.io/instance: delivery
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+data:
+  POSTGRES_DB: delivery_db
+  POSTGRES_USER: admin
+  POSTGRES_PASSWORD: passadmin
+  PGDATA: /var/lib/postgresql/data/pgdata
+
+
+  spring.datasource.url: jdbc:postgresql://localhost:5432/postgres
+  spring.datasource.username: admin
+  spring.datasource.password: passadmin
+  jakarta.persistence.jdbc.url: jdbc:postgresql://localhost:5432/public/
+
+  # This will drop any table in the database and create new ones base on the models
+  spring.jpa.hibernate.ddl-auto: create-drop
+---
+# Source: delivery/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: delivery
+  labels:
+    helm.sh/chart: delivery-0.1.0
+    app.kubernetes.io/name: delivery
+    app.kubernetes.io/instance: delivery
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    prometheus.io/port: "8000"
+    prometheus.io/scrape: "true"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8000
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: 9093
+      targetPort: 9000
+      protocol: TCP
+      name: metrics
+  selector:
+    app.kubernetes.io/name: delivery
+    app.kubernetes.io/instance: delivery
+---
+# Source: delivery/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: delivery
+  labels:
+    helm.sh/chart: delivery-0.1.0
+    app.kubernetes.io/name: delivery
+    app.kubernetes.io/instance: delivery
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: delivery
+      app.kubernetes.io/instance: delivery
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: delivery-0.1.0
+        app.kubernetes.io/name: delivery
+        app.kubernetes.io/instance: delivery
+        app.kubernetes.io/version: "1.16.0"
+        app.kubernetes.io/managed-by: Helm
+    spec:
+      serviceAccountName: default
+      securityContext:
+        {}
+      containers:
+        - name: delivery
+          securityContext:
+            {}
+          image: "slezkin71/microservice:delivery_v01"
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: delivery-config
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health/
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /health/
+              port: http
+            initialDelaySeconds: 50
+            periodSeconds: 15
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 512Mi
+            requests:
+              cpu: 500m
+              memory: 512Mi
+        - name: delivery-db
+          securityContext:
+            {}
+          image: "postgres"
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: delivery-config
+          ports:
+            - name: http
+              containerPort: 5432
+              protocol: TCP
+---
+# Source: delivery/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: delivery
+  labels:
+    helm.sh/chart: delivery-0.1.0
+    app.kubernetes.io/name: delivery
+    app.kubernetes.io/instance: delivery
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: "delivery.localdev.me"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: delivery
+                port:
+                  number: 8000
+---
+# Source: delivery/templates/servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: delivery-monitor
+  labels:
+    helm.sh/chart: delivery-0.1.0
+    app.kubernetes.io/name: delivery
+    app.kubernetes.io/instance: delivery
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+    release: kube-prometheus-stack
+#    release: kube-prometheus-stack
+spec:
+  endpoints:
+    - port: ""
+      scheme: http
+      path: /actuator/prometheus
+      interval: 60s
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: delivery
+      app.kubernetes.io/instance: delivery
+  namespaceSelector:
+    matchNames:
+      - pub

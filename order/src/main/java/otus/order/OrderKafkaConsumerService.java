@@ -22,7 +22,7 @@ public class OrderKafkaConsumerService {
     private final OrderService orderService;
 
 
-    @KafkaListener(topics = {"user", "billing"}, groupId = "order-group", errorHandler = "handleKafkaException")
+    @KafkaListener(topics = {"billing", "ware", "delivery"}, groupId = "order-group", errorHandler = "handleKafkaException")
     public void listen(String message) {
         log.info("Received Message: " + message);
         Event event = null;
@@ -34,15 +34,9 @@ public class OrderKafkaConsumerService {
             log.error("Ошибка трансформации сообщения: {}", ex.getMessage());
         }
         assert event != null;
-        if (event != null) {
-
-            // обновлем статус счета
-            if ((Objects.equals(event.getSource(), "billing") && (event.getType() == EventType.ACCOUNT_PAID)) //если прошла оплата
-                || (Objects.equals(event.getSource(), "ware") && (event.getStatus() == EventStatus.ERROR))) //если товара на складе нет
-            {
-                // обновляем статус по событию
-                orderService.updateStatus(event);
-            }
+        if (event != null && event.getStatus() != null && event.getType() != null) {
+            // обновляем статус по событию
+            orderService.updateStatus(event);
         }
     }
 }

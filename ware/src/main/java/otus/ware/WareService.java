@@ -11,6 +11,9 @@ import otus.lib.event.EventType;
 import otus.lib.exception.ErrorType;
 import otus.lib.exception.SrvException;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 
 @Slf4j
 @Service
@@ -25,7 +28,8 @@ public class WareService implements WareServiceInterface {
 
     @Override
     public WareDto getWare(Long id){
-        Ware ware = wareRepository.findById(id).orElseThrow(() -> new SrvException(ErrorType.ORD_NOT_FOUND));
+//        Ware ware = wareRepository.findById(id).orElseThrow(() -> new SrvException(ErrorType.ORD_NOT_FOUND));
+        Ware ware = wareRepository.findById(id).orElse(new Ware());// .orElseThrow(() -> new SrvException(ErrorType.ORD_NOT_FOUND));
         return WareMapper.mapToWareDto(ware);
     }
 
@@ -69,8 +73,9 @@ public class WareService implements WareServiceInterface {
 
         //готовим событие к отправке
         event.setSource("ware");
+        event.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
         event.setType(EventType.RESERVE_CREATING);
-        event.setMessage(EventType.RESERVE_CREATING.getDescription());
+        event.setMessage(event.getType().getDescription());
 
         if((event.getWareId() != null) && (event.getAmount() != null)) {
 

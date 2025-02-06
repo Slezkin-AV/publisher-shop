@@ -10,7 +10,8 @@ import otus.lib.event.*;
 import otus.lib.exception.*;
 
 
-
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -33,7 +34,9 @@ public class UserService implements UserServiceInterface {
         User usr = userRepository.save(user);
         try {
             Event event = new Event(EventType.USER_CREATE, EventStatus.SUCCESS,
-                    "user", EventType.USER_CREATE.getDescription(), usr.getId(), null, null, null,null);
+                    "user", EventType.USER_CREATE.getDescription(), usr.getId(), null, null, null,null,
+                    Timestamp.valueOf(LocalDateTime.now()),
+                    Timestamp.valueOf(LocalDateTime.now()));
             eventProducer.sendMessage(event);
         }catch (RuntimeException ex){
             log.info(String.valueOf(ex));

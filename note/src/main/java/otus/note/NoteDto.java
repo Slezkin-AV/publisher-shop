@@ -10,5 +10,5 @@ import otus.lib.event.Event;
 @ToString(callSuper = true)
 public class NoteDto extends Event {
     private Long id;
-
+    private String statusDescription;
 }

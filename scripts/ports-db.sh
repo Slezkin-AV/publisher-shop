@@ -13,3 +13,4 @@ kubectl port-forward -n pub $(kubectl -n pub get pod -l 'app.kubernetes.io/name=
 kubectl port-forward -n pub $(kubectl -n pub get pod -l 'app.kubernetes.io/name=user' -o name) 5430:5432 &
 kubectl port-forward -n pub $(kubectl -n pub get pod -l 'app.kubernetes.io/name=order' -o name) 5434:5432 &
 kubectl port-forward -n pub $(kubectl -n pub get pod -l 'app.kubernetes.io/name=ware' -o name) 5435:5432 &
+kubectl port-forward -n pub $(kubectl -n pub get pod -l 'app.kubernetes.io/name=delivery' -o name) 5436:5432 &

@@ -19,4 +19,5 @@ public class OrderDto {//extends Event {
     private Long amount;
     private Double sum;
     private Long wareId;
+    private String orderStatusDescription;
 }

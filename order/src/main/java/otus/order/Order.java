@@ -38,6 +38,7 @@ public class Order {// extends Event {
     private Long amount;
     private Double sum;
     private Long wareId;
+    private String orderStatusDescription;
 
     @PrePersist
     private void onCreate(){
@@ -49,12 +50,6 @@ public class Order {// extends Event {
     @PreUpdate
     private void onUpdate(){
         updatedAt = Timestamp.valueOf(LocalDateTime.now());
+        orderStatusDescription = orderStatus.getDescription();
     }
-
-//    public Order(Event event){
-//        super(event.getType(), event.getStatus(),
-//                event.getSource(), event.getMessage(), event.getUserId(),
-//                event.getAmount(), event.getOrderId());
-//    }
-
 }

@@ -22,7 +22,8 @@
         <module>note</module>
         <module>order</module>
         <module>ware</module>
-<!--        <module>publisher</module>-->
+        <module>delivery</module>
+        <!--        <module>publisher</module>-->
     </modules>
 
     <properties>

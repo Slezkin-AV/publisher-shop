@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -22,6 +24,8 @@ public class Event {
     private Long orderId;
     private Long wareId;
     private Double sum;
+    private Timestamp created;
+    private Timestamp updated;
 
     public String key(){
         return message;

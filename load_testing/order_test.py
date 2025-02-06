@@ -13,14 +13,19 @@ USER_HOST='publisher.localdev.me'
 ORDER_HOST='order.localdev.me'
 BILLING_HOST='billing.localdev.me'
 WARE_HOST='ware.localdev.me'
+NOTE_HOST='note.localdev.me'
+DELIVERY_HOST='delivery.localdev.me'
 SERVICE_PORT=8000
 API_URL_USER=f"http://{USER_HOST}:{SERVICE_PORT}"
 API_URL_ORDER=f"http://{ORDER_HOST}:{SERVICE_PORT}"
 API_URL_BILLING=f"http://{BILLING_HOST}:{SERVICE_PORT}"
 API_URL_WARE=f"http://{WARE_HOST}:{SERVICE_PORT}"
+API_URL_NOTE=f"http://{NOTE_HOST}:{SERVICE_PORT}"
+API_URL_DELIVERY=f"http://{DELIVERY_HOST}:{SERVICE_PORT}"
 
-targets={API_URL_USER, API_URL_ORDER, API_URL_BILLING, API_URL_WARE}
+targets={API_URL_USER, API_URL_ORDER, API_URL_BILLING, API_URL_WARE, NOTE_HOST, API_URL_DELIVERY}
 
+# ======================================== #
 
 class CustomFormatter(logging.Formatter):
 
@@ -91,8 +96,8 @@ class OrderTest:
                 logger.info(f"response on {url}: {resp.text}")
                 return resp
             else:
-                logger.error(f"responce: {resp}")
-                logger.error(f"Error response on {url}: {resp.status_code}") 
+                logger.error(f"responce: {resp}: {resp.status_code}")
+                logger.error(f"Error response on {url}, headers={header}, json={json_data}, params={param}") 
 
 
     def create_new_user(self):
@@ -142,7 +147,7 @@ class OrderTest:
     def send_order(self, id, order):
         
         # order = self.new_order(id)
-        logger.info(f"send order : {order}")
+        logger.debug(f"send order : {order}")
 
         header={'Contetn-Type': 'application/json'}
         # header = {"Authorization": f"Bearer {token}"}
@@ -190,7 +195,7 @@ class OrderTest:
                 pass
 
 
-
+# ======================================== #
 
 
 if __name__ == "__main__":
@@ -202,7 +207,7 @@ if __name__ == "__main__":
     # test1.clean_ware()
 
     id = test1.create_new_user()
-    order = test1.new_order(id,30,450,14)
+    order = test1.new_order(id,30,450,15)
     logger.debug(f"Test ORDER: {order}");
     if id:
         test1.login(id)

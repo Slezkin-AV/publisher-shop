@@ -11,7 +11,7 @@ metadata:
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 data:
-  POSTGRES_DB: order_db
+  POSTGRES_DB: ware_db
   POSTGRES_USER: admin
   POSTGRES_PASSWORD: passadmin
   PGDATA: /var/lib/postgresql/data/pgdata

@@ -150,7 +150,7 @@ postgress:
   image: postgres
   pgdata: /var/lib/postgresql/data/pgdata
   pg_port: 5432
-  postgres_db: order_db
+  postgres_db: ware_db
   postgres_user: admin
   postgres_password: passadmin
 
