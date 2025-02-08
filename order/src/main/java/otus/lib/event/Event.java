@@ -25,6 +25,7 @@ public class Event {
     private Double sum;
     private Timestamp created;
     private Timestamp updated;
+    private OrderStatus orderStatus;
 
     public String key(){
         return message;

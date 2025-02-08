@@ -17,13 +17,15 @@ public class Note extends Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String statusDescription;
+    private String orderStatusDescription;
 
     public Note(Event event){
         super(event.getType(), event.getStatus(),
                 event.getSource(), event.getMessage(), event.getUserId(),
                 event.getAmount(), event.getOrderId(),event.getWareId(), event.getSum(),
-                event.getCreated(), event.getUpdated());
+                event.getCreated(), event.getUpdated(),event.getOrderStatus());
         this.statusDescription = getStatus().getDescription();
+        this.orderStatusDescription = getOrderStatus().getDescription();
     }
 
 }

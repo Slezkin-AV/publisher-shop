@@ -1,15 +1,16 @@
-package otus.order;
+package otus.lib.event;
 
 import lombok.Getter;
 
 @Getter
 public enum OrderStatus {
+    NONE("None"),
     CREATED("New order created"),
     PAID("Order paid"),
-    RESERVED("Order reserved in wharehouse"),
+    RESERVED("Order shipped from wharehouse"),
     DELIVERED("Order delivered"),
-    REJECTED("ERROR"),
-    NONE("No info")
+    PAYBACK("Order paying returned"),
+    REJECTED("Order rejected")
     ;
 
     OrderStatus(String description) {

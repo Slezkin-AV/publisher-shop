@@ -11,4 +11,5 @@ import otus.lib.event.Event;
 public class NoteDto extends Event {
     private Long id;
     private String statusDescription;
+    private String orderStatusDescription;
 }

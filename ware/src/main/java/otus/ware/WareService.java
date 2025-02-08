@@ -71,27 +71,54 @@ public class WareService implements WareServiceInterface {
     public boolean reserveWare(Event event){
         boolean res = false;
 
-        //готовим событие к отправке
-        event.setSource("ware");
-        event.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
-        event.setType(EventType.RESERVE_CREATING);
-        event.setMessage(event.getType().getDescription());
+        EventType eventType = EventType.NONE;
+        EventStatus eventStatus = EventStatus.ERROR;
 
-        if((event.getWareId() != null) && (event.getAmount() != null)) {
+        WareDto wareDto = getWare(event.getWareId());
+        if(wareDto == null){
+//            eventStatus = EventStatus.ERROR;
+            eventType = EventType.RESERVE_CREATING;
+        }else {
 
-            WareDto wareDto = getWare(event.getWareId());
-            if(wareDto.getAmount() != null) {
-                long amount = wareDto.getAmount() - event.getAmount();
-                if (amount >= 0) { // есть еще порох в пороховницах - списываем и отправляем событие
-                    wareDto.setAmount(amount);
-                    wareRepository.save(WareMapper.mapToWare(wareDto));
-                    res = true;
-                } else { // отстатка на складе недостаточно, отменяем оплату и счет в целом
-                    event.setStatus(EventStatus.ERROR);
+            switch (event.getType()) {
+                case ACCOUNT_PAID -> {
+                    if(event.getStatus() == EventStatus.SUCCESS) { //счет действительно оплачен
+                        eventType = EventType.RESERVE_CREATING;
+                        if(wareDto.getAmount() != null) {
+                            long amount = wareDto.getAmount() - event.getAmount();
+                            if (amount >= 0) { // есть еще порох в пороховницах - списываем и отправляем событие
+                                wareDto.setAmount(amount);
+                                wareRepository.save(WareMapper.mapToWare(wareDto));
+                                res = true;
+                                eventStatus = EventStatus.SUCCESS;
+                            }
+                        }
+                    }
                 }
-            }else{event.setStatus(EventStatus.ERROR);}
-        }else {event.setStatus(EventStatus.ERROR);}
-        eventProducer.sendMessage(event);
+                case DELIVERING -> { //получилась ли доставка
+                    if(event.getStatus() == EventStatus.ERROR) { //дым - в трубу, дрова - в исходную
+                        eventType = EventType.RESERVE_CANCELING;
+                        long amount = 0L;
+                        if (wareDto.getAmount() != null) {amount += wareDto.getAmount();}
+                        amount +=event.getAmount();
+                        wareDto.setAmount(amount);
+                        wareRepository.save(WareMapper.mapToWare(wareDto));
+                        res = true;
+                        eventStatus = EventStatus.SUCCESS;
+                    }
+                }
+                default -> {}
+            }
+        }
+
+        if(eventType != EventType.NONE) { //готовим событие к отправке
+            event.setSource("ware");
+            event.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
+            event.setStatus(eventStatus);
+            event.setType(eventType);
+            event.setMessage(event.getType().getDescription());
+            eventProducer.sendMessage(event);
+        }
         return res;
     }
 
@@ -104,15 +131,6 @@ public class WareService implements WareServiceInterface {
             ware.setPrice(100.0);
             wareRepository.save(ware);
         }
-
-//        wareTypeRepository.deleteAll();
-//        WareType wareType = new WareType();
-//        //формируем товары по умолчанию
-//        for( int i =0; i<10; i++){
-//            wareType.setWareName("Товар " + i);
-//            wareType.setPrice(100 + i*10);
-//            wareTypeRepository.save(wareType);
-//        }
     }
 
 }

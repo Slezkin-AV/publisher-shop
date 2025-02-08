@@ -35,14 +35,9 @@ public class DeliverKafkaConsumerService {
         }
         assert event != null;
 
-        if( event != null) {
-            // проверка оплаты счета
-            if (Objects.equals(event.getSource(), "ware") && (event.getStatus() == EventStatus.SUCCESS)) {
-                if (event.getType() == EventType.RESERVE_CREATING) {
-                    // товар зарезервирован, выпускаем кракена
-                    boolean reserved = deliveryService.deliverWare(event);
-                }
-            }
+        if (event != null && event.getStatus() != null && event.getType() != null && event.getOrderId() != null) {
+            // обновляем статус по событию
+            deliveryService.deliverWare(event);
         }
     }
 

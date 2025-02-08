@@ -6,14 +6,16 @@ public class DeliveryMapper {
     public static DeliveryDto mapToWareDto(Delivery delivery) {
 
         return new DeliveryDto(
-                delivery.getId()
+                delivery.getId(),
+                delivery.getStatusDescription()
         );
     }
 
     // Convert DeliveryDto into Delivery JPA Entity
     public static Delivery mapToWare(DeliveryDto deliveryDto) {
         return new Delivery(
-                deliveryDto.getId()
+                deliveryDto.getId(),
+                deliveryDto.getStatusDescription()
         );
     }
 }

@@ -22,7 +22,7 @@ public class WareKafkaConsumerService {
     private final WareService wareService;
 
 
-    @KafkaListener(topics = {/*"user",*/"billing","order"}, groupId = "ware-group", errorHandler = "handleKafkaException")
+    @KafkaListener(topics = {"billing","order","delivery"}, groupId = "ware-group", errorHandler = "handleKafkaException")
     public void listen(String message) {
         log.info("Received Message: " + message);
         Event event = null;
@@ -35,17 +35,9 @@ public class WareKafkaConsumerService {
         }
         assert event != null;
 
-        if( event != null) {
-            // проверка оплаты счета
-            if (Objects.equals(event.getSource(), "billing") && (event.getStatus() == EventStatus.SUCCESS)) {
-                if (event.getType() == EventType.ACCOUNT_PAID) {
-
-                    // резервируем товар, если счет оплачен
-                    // если резервирование успешно - там и передаем в доставку
-                    // иначе - отменяем и оплату, и счет в целом
-                    boolean reserved = wareService.reserveWare(event);
-                }
-            }
+        if (event != null && event.getStatus() != null && event.getType() != null) {
+            // обновляем по событию
+            boolean reserved = wareService.reserveWare(event);
         }
     }
 

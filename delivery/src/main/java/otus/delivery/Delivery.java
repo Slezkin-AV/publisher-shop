@@ -16,11 +16,14 @@ public class Delivery extends Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String statusDescription;
 
     public Delivery(Event event) {
         super(event.getType(), event.getStatus(),
                 event.getSource(), event.getMessage(), event.getUserId(),
                 event.getAmount(), event.getOrderId(), event.getWareId(), event.getSum(),
-                event.getCreated(), event.getUpdated());
+                event.getCreated(), event.getUpdated(), event.getOrderStatus());
+        this.statusDescription = event.getStatus().getDescription();
     }
+
 }

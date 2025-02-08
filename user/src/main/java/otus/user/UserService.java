@@ -36,7 +36,7 @@ public class UserService implements UserServiceInterface {
             Event event = new Event(EventType.USER_CREATE, EventStatus.SUCCESS,
                     "user", EventType.USER_CREATE.getDescription(), usr.getId(), null, null, null,null,
                     Timestamp.valueOf(LocalDateTime.now()),
-                    Timestamp.valueOf(LocalDateTime.now()));
+                    Timestamp.valueOf(LocalDateTime.now()),OrderStatus.NONE);
             eventProducer.sendMessage(event);
         }catch (RuntimeException ex){
             log.info(String.valueOf(ex));

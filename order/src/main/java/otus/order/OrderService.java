@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import otus.lib.event.Event;
-import otus.lib.event.EventProducer;
-import otus.lib.event.EventStatus;
-import otus.lib.event.EventType;
+import otus.lib.event.*;
 import otus.lib.exception.ErrorType;
 import otus.lib.exception.SrvException;
 
@@ -37,70 +34,55 @@ public class OrderService implements OrderServiceInterface {
         Order order = orderRepository.findById(event.getOrderId()).orElseThrow(() -> new SrvException(ErrorType.ORD_NOT_FOUND));
         OrderStatus orderStatus = OrderStatus.NONE;
         EventType eventType = EventType.NONE;
+//        EventStatus eventStatus = EventStatus.ERROR;
 
         switch (event.getType()) {
-            case ACCOUNT_PAID: //from "billing"
-                orderStatus = OrderStatus.PAID;
-                eventType = EventType.ORDER_PAID;
-                break;
-            case ACCOUNT_RETURN: //from "billing"
-                orderStatus = OrderStatus.REJECTED;
+            case ACCOUNT_PAID -> {//from "billing"
+                if(event.getStatus() == EventStatus.SUCCESS) {
+                    eventType = EventType.ORDER_PAID;
+                    orderStatus = OrderStatus.PAID;
+                }else {
+                    orderStatus = OrderStatus.REJECTED;
+                    eventType = EventType.ORDER_CANCELED;
+                }
+            }
+            case ACCOUNT_RETURN -> {
+                //from "billing"
                 eventType = EventType.ORDER_CANCELED;
-                break;
-            case RESERVE_CREATING: //from "ware"
-                if(event.getStatus() == EventStatus.SUCCESS) { //есть порох...
+                if(event.getStatus() == EventStatus.SUCCESS) {
+                    orderStatus = OrderStatus.PAYBACK;
+                }else {orderStatus = OrderStatus.REJECTED;}
+            }
+            case RESERVE_CREATING -> { //from "ware"
+                if (event.getStatus() == EventStatus.SUCCESS) { //есть порох...
                     orderStatus = OrderStatus.RESERVED;
                     eventType = EventType.ORDER_RESERVED;
-                }else{ //или уже на складе ничего нет
+                } else { //или уже на складе ничего нет
                     orderStatus = OrderStatus.REJECTED;
                     eventType = EventType.ORDER_CANCELED;
                 }
-                break;
-            case DELIVERING: //from "delivery"
-                if(event.getStatus() == EventStatus.SUCCESS) {//доставка состоялась...
+            }
+            case DELIVERING -> {//from "delivery"
+                if (event.getStatus() == EventStatus.SUCCESS) {//доставка состоялась...
                     orderStatus = OrderStatus.DELIVERED;
                     eventType = EventType.ORDER_DELIVERED;
-                }else {//... или не состоялась
+                } else {//... или не состоялась
                     orderStatus = OrderStatus.REJECTED;
                     eventType = EventType.ORDER_CANCELED;
                 }
-                break;
-            default:
-                break;
+            }
+            default -> {}
         }
 
-//        if (Objects.equals(event.getSource(), "billing") && event.getType() == EventType.ACCOUNT_PAID) {
-//            if(event.getStatus() == EventStatus.SUCCESS){//если прошла оплата
-//                event.setType(EventType.ORDER_PAID);
-//                orderStatus = OrderStatus.PAID;
-//            }else { //оплата не прошла
-//                event.setType(EventType.ORDER_CANCELED);
-//                orderStatus = OrderStatus.REJECTED;
-//            }
-//        }
-//
-//        if (Objects.equals(event.getSource(), "ware") && (event.getStatus() == EventStatus.ERROR)) { //если товара на складе нет
-//            order.setOrderStatus(OrderStatus.REJECTED);
-//            event.setType(EventType.ORDER_CANCELED);
-//        }
-//
-//        if (Objects.equals(event.getSource(), "delivery")){//доставка состоялась или не состоялась
-//            if(event.getStatus() == EventStatus.SUCCESS){
-//                orderStatus = OrderStatus.DELIVERED;
-//                event.setType(EventType.ORDER_DELIVERED);
-//            }else{
-//                orderStatus = OrderStatus.REJECTED;
-//                event.setType(EventType.ORDER_CANCELED);
-//            }
-//        }
-
         if(orderStatus != OrderStatus.NONE) {
-            order.setOrderStatus(orderStatus);
-            orderRepository.save(order);
-
             event.setSource("order");
-            event.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
+            if(eventType.getValue() >= event.getType().getValue()) {
+                order.setOrderStatus(orderStatus);
+                orderRepository.save(order);
+                event.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
+            }
             event.setType(eventType);
+            event.setOrderStatus(orderStatus);
             event.setMessage(event.getType().getDescription());
 
             // + to Kafka
@@ -126,7 +108,7 @@ public class OrderService implements OrderServiceInterface {
                     "order",eventType.getDescription(), order1.getUserId(), order1.getAmount(),
                     order1.getId(),order1.getWareId(), order1.getSum(),
                     Timestamp.valueOf(LocalDateTime.now()),
-                    Timestamp.valueOf(LocalDateTime.now())
+                    Timestamp.valueOf(LocalDateTime.now()), order1.getOrderStatus()
             );
             eventProducer.sendMessage(event1);
         } catch(RuntimeException ex) {

@@ -8,6 +8,9 @@ import faker
 # from faker import Faker
 import requests
 from requests.exceptions import HTTPError
+import sys
+import time
+
 
 USER_HOST='publisher.localdev.me'
 ORDER_HOST='order.localdev.me'
@@ -120,6 +123,7 @@ class OrderTest:
                 "password": user['password']
                 }
             self.logins[id]=login
+            time.sleep(1)
             return id
 
 
@@ -202,19 +206,30 @@ if __name__ == "__main__":
     
     # logging.basicConfig(level=logging.INFO)
     logger.info("Test STARTING");
-    test1 = OrderTest() 
-    # test1.cleanAll()
-    # test1.clean_ware()
 
-    id = test1.create_new_user()
-    order = test1.new_order(id,30,450,15)
-    logger.debug(f"Test ORDER: {order}");
-    if id:
-        test1.login(id)
-        test1.increase_account(id, 1000)
-        test1.send_order(id, order)
-        test1.send_order(id, order)
-        test1.send_order(id, order)
+    test1 = OrderTest() 
+
+    nums = len(sys.argv)
+    for i in range(1,nums):
+        
+        if sys.argv[i] == "ware":
+            logger.debug(f"processing 'ware'")
+            test1.clean_ware()
+
+        if sys.argv[i] in("order", "or", "o"):
+            logger.debug(f"processing 'order'")
+            id = test1.create_new_user()
+            order = test1.new_order(id,10,50,10)
+            logger.debug(f"Test USER: {order}");
+            if id:
+                test1.login(id)
+                test1.increase_account(id, 1000)
+                test1.send_order(id, order)
+                # test1.send_order(id, order)
+                # test1.send_order(id, order)
+
+    # # test1.cleanAll()
+
     logger.info("Test FINISHED");
 
 

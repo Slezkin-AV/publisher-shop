@@ -4,12 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import otus.lib.event.EventStatus;
+import otus.lib.event.*;
 import otus.lib.exception.ErrorType;
 import otus.lib.exception.SrvException;
-import otus.lib.event.Event;
-import otus.lib.event.EventProducer;
-import otus.lib.event.EventType;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -24,6 +21,50 @@ public class AccountService implements AccountServiceInterface {
     @Autowired
     private final EventProducer eventProducer;
 
+
+    public boolean processEvent(Event event){
+        boolean res = false;
+
+        EventType eventType = EventType.NONE;
+        EventStatus eventStatus = EventStatus.ERROR;
+
+        switch (event.getType()){
+            case USER_CREATE -> {
+                if(event.getStatus() == EventStatus.SUCCESS){
+                    eventType = EventType.ACCOUNT_CREATE;
+                    accountRepository.save(new Account(event));
+                    eventStatus = EventStatus.SUCCESS;
+                }
+            }
+            case ORDER_CREATED -> {
+                if(event.getStatus() == EventStatus.SUCCESS){
+                    eventType = EventType.ACCOUNT_PAID;
+                    AccountDto accountDto = payAccount(event);
+                    if(accountDto != null){eventStatus = EventStatus.SUCCESS;}
+                }
+            }
+            case RESERVE_CREATING, DELIVERING -> {
+                if(event.getStatus() == EventStatus.ERROR){
+                    eventType = EventType.ACCOUNT_RETURN;
+                    AccountDto accountDto = cashBackAccount(event);
+                    if(accountDto != null){eventStatus = EventStatus.SUCCESS;}
+                }
+            }
+//            case DELIVERING -> {}
+            default -> {}
+        }
+
+        if(eventType != EventType.NONE) { //готовим событие к отправке
+            event.setSource("billing");
+            event.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
+            event.setStatus(eventStatus);
+            event.setType(eventType);
+            event.setMessage(event.getType().getDescription());
+            eventProducer.sendMessage(event);
+        }
+
+        return res;
+    }
 
     public AccountDto createAccount(Event event){
         Account account = new Account(event);
@@ -59,30 +100,23 @@ public class AccountService implements AccountServiceInterface {
         eventProducer.sendMessage(new Event(EventType.ACCOUNT_UPDATE, EventStatus.SUCCESS, "billing",
                 EventType.ACCOUNT_UPDATE.getDescription(),
                 id, null,null,null, sum,
-                Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now())));
+                Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now()), OrderStatus.NONE));
 
         return accountDto;
     }
 
     public AccountDto payAccount(Event event){
 
-//        assert event.getSum() != null;
         AccountDto accountDto = getAccount(event.getUserId());
-//        assert accountDto.getSum() != null;
-        event.setSource("billing");
-        event.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
-        event.setType(EventType.ACCOUNT_PAID);
-        event.setMessage(event.getType().getDescription());
+
 
         if(event.getSum() != null && accountDto.getSum() != null){
             accountDto.setSum(accountDto.getSum() - event.getSum());
             if( accountDto.getSum() >= 0){
                 accountRepository.save(AccountMapper.mapToAccount(accountDto));
 
-            } else {event.setStatus(EventStatus.ERROR);}
-        } else {event.setStatus(EventStatus.ERROR);}
-        // + to Kafka
-        eventProducer.sendMessage(event);
+            } else return null;
+        } else return null;
         return accountDto;
     }
 
@@ -92,6 +126,7 @@ public class AccountService implements AccountServiceInterface {
         accountRepository.save(AccountMapper.mapToAccount(accountDto));
         return accountDto;
     }
+
     public void deleteAccount(long id){
         AccountDto accountDto = getAccount(id);
         if (accountDto.getSum() == null  || accountDto.getSum() == 0.0){
@@ -106,20 +141,12 @@ public class AccountService implements AccountServiceInterface {
         double sum = 0.0;
         if(event.getSum() != null){
             sum += event.getSum();
-        }
+        } else {return null;}
         if(accountDto.getSum() != null) {
             sum += accountDto.getSum();
         }
         accountDto.setSum(sum);
         accountRepository.save(AccountMapper.mapToAccount(accountDto));
-
-        event.setSource("billing");
-        event.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
-        event.setStatus(EventStatus.SUCCESS);
-        event.setType(EventType.ACCOUNT_RETURN);
-        event.setMessage(event.getType().getDescription());
-        // + to Kafka
-        eventProducer.sendMessage(event);
 
         return accountDto;
     }

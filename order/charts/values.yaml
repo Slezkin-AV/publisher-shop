@@ -91,7 +91,7 @@ ingress:
 
 resources: #{}
   limits:
-    cpu: 1000m
+    cpu: 1500m
     memory: 512Mi
   requests:
     cpu: 500m
@@ -109,13 +109,13 @@ livenessProbe:
     path: /health/
     port: http
   initialDelaySeconds: 30
-  periodSeconds: 15
+  periodSeconds: 10
 readinessProbe:
   httpGet:
     path: /health/
     port: http
-  initialDelaySeconds: 50
-  periodSeconds: 15
+  initialDelaySeconds: 30
+  periodSeconds: 10
 
 #This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:

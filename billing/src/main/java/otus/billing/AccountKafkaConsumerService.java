@@ -21,7 +21,7 @@ public class AccountKafkaConsumerService {
     @Autowired
     private final AccountService accountService;
 
-    @KafkaListener(topics = {"user", "order", "ware"}, groupId = "billing-group")//, errorHandler = "handleKafkaException")
+    @KafkaListener(topics = {"user", "order", "ware", "delivery"}, groupId = "billing-group")//, errorHandler = "handleKafkaException")
     public void listen(String message) {
         log.info("Received Message: " + message);
         Event event = null;
@@ -35,28 +35,8 @@ public class AccountKafkaConsumerService {
         assert event != null;
 
 //        log.info(event.description());
-        if( event != null) {
-
-            //создаем счет при создании user
-            if (event.getStatus() == EventStatus.SUCCESS && Objects.equals(event.getSource(), "user")) {
-                if (event.getType() == EventType.USER_CREATE) {
-                    accountService.createAccount(event);
-                }
-            }
-
-            //оплата order
-            if (event.getStatus() == EventStatus.SUCCESS && Objects.equals(event.getSource(), "order")) {
-                if (event.getType() == EventType.ORDER_CREATED) {
-                    accountService.payAccount(event);
-                }
-            }
-
-            //возврат денег
-            if(Objects.equals(event.getSource(), "ware") && (event.getStatus() == EventStatus.ERROR)) //если товара на складе нет
-            {
-                accountService.cashBackAccount(event);
-            }
+        if( event != null && event.getType() != null && event.getStatus() != null) {
+            accountService.processEvent(event);
         }
-
     }
 }

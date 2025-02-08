@@ -4,21 +4,20 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import otus.lib.event.Event;
-import otus.lib.event.EventProducer;
-import otus.lib.event.EventStatus;
-import otus.lib.event.EventType;
+import otus.lib.event.*;
 import otus.lib.exception.ErrorType;
 import otus.lib.exception.SrvException;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Random;
 
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class DeliveryService implements DeliveryServiceInterface {
+    private final int fail_level = 7;
 
     private final DeliverRepositoryInterface deliveryRepository;
 
@@ -33,31 +32,41 @@ public class DeliveryService implements DeliveryServiceInterface {
 
     public boolean deliverWare(Event event){
         boolean res = false;
+        EventType eventType = EventType.NONE;
+        EventStatus eventStatus = EventStatus.ERROR;
 
-        //готовим событие к отправке
-        event.setSource("delivery");
-        event.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
-        event.setType(EventType.DELIVERING);
-        event.setMessage(event.getType().getDescription());
-
-        if((event.getWareId() != null)  && (event.getAmount() != null)
-                && event.getUserId() != null && event.getOrderId() != null) {
-            Delivery delivery = new Delivery(event);
-            if(delivered(delivery)) {
-                res = true;
-            } else { // что-то пошло не так...
-                    delivery.setStatus(EventStatus.ERROR);
-                    event.setStatus(EventStatus.ERROR);
+        switch (event.getType()){
+            case RESERVE_CREATING -> { //from "ware"
+                if (event.getStatus() == EventStatus.SUCCESS) { //есть порох...
+                    eventType = EventType.DELIVERING;
+                    if (delivered(event)) {
+                        eventStatus = EventStatus.SUCCESS;
+                    }
+                }
             }
-            deliveryRepository.save(delivery);
-        }else{event.setStatus(EventStatus.ERROR);}
-        // + to Kafka
-        eventProducer.sendMessage(event);
+        }
+
+        if(eventType != EventType.NONE) {
+
+            //готовим событие к отправке
+            event.setSource("delivery");
+            event.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
+            event.setStatus(eventStatus);
+            event.setType(eventType);
+            event.setMessage(event.getType().getDescription());
+
+            deliveryRepository.save(new Delivery(event)); //фиксируем итоги доставки
+
+            // + to Kafka
+            eventProducer.sendMessage(event);
+        }
         return res;
     }
 
-    public boolean delivered(Delivery delivery){
-        return true;
+    public boolean delivered(Event event){
+        Random rand = new Random();
+        int rr = rand.nextInt(10);
+        return event.getUserId() % 2 != 0;
     }
 
     public void cleanAll(){

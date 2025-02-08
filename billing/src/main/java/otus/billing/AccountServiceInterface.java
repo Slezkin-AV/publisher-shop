@@ -4,6 +4,7 @@ package otus.billing;
 import otus.lib.event.Event;
 
 public interface AccountServiceInterface {
+    boolean processEvent(Event event);
     AccountDto createAccount(Event event);
     AccountDto getAccount(long id);
     AccountDto updateAccount(long ig, double amount);

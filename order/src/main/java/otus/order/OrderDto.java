@@ -1,7 +1,7 @@
 package otus.order;
 
 import lombok.*;
-import otus.lib.event.Event;
+import otus.lib.event.OrderStatus;
 
 import java.sql.Timestamp;
 

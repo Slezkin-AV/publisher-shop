@@ -34,7 +34,7 @@ public class OrderKafkaConsumerService {
             log.error("Ошибка трансформации сообщения: {}", ex.getMessage());
         }
         assert event != null;
-        if (event != null && event.getStatus() != null && event.getType() != null) {
+        if (event != null && event.getStatus() != null && event.getType() != null && event.getOrderId() != null) {
             // обновляем статус по событию
             orderService.updateStatus(event);
         }

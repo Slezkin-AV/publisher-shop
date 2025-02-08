@@ -16,7 +16,8 @@ public class NoteMapper {
 
         return new NoteDto(
                 note.getId(),
-                note.getStatusDescription()
+                note.getStatusDescription(),
+                note.getOrderStatusDescription()
         );
     }
 
@@ -24,7 +25,8 @@ public class NoteMapper {
     public static Note mapToNote(NoteDto noteDto) {
         return new Note(
                 noteDto.getId(),
-                noteDto.getStatusDescription()
+                noteDto.getStatusDescription(),
+                noteDto.getOrderStatusDescription()
         );
     }
 }

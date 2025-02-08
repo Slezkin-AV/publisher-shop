@@ -5,7 +5,7 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import otus.lib.event.Event;
+import otus.lib.event.OrderStatus;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -50,6 +50,7 @@ public class Order {// extends Event {
     @PreUpdate
     private void onUpdate(){
         updatedAt = Timestamp.valueOf(LocalDateTime.now());
-        orderStatusDescription = orderStatus.getDescription();
+        setOrderStatusDescription(orderStatus.getDescription());
+//        orderStatusDescription = orderStatus.getDescription();
     }
 }
