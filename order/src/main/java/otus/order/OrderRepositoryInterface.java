@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface OrderRepositoryInterface extends JpaRepository<Order, Long> {
     List<Order> findById(long id);
+    List<Order> findByMd5(String md5);
 }

@@ -100,17 +100,17 @@ spec:
             httpGet:
               path: /health/
               port: http
-            initialDelaySeconds: 30
+            initialDelaySeconds: 40
             periodSeconds: 15
           readinessProbe:
             httpGet:
               path: /health/
               port: http
-            initialDelaySeconds: 50
+            initialDelaySeconds: 40
             periodSeconds: 15
           resources:
             limits:
-              cpu: 1000m
+              cpu: 1500m
               memory: 512Mi
             requests:
               cpu: 500m
@@ -142,10 +142,10 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: "ware.localdev.me"
+    - host: "publisher.localdev.me"
       http:
         paths:
-          - path: /
+          - path: /ware
             pathType: Prefix
             backend:
               service:

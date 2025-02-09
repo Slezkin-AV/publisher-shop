@@ -1,6 +1,8 @@
 package otus.lib.security;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -11,6 +13,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.RequestMatcher;
+
+import java.util.List;
 
 
 @Slf4j
@@ -19,6 +24,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig  {
 
+//    private static List<String> SEC_PATH;
+//
+//    @Autowired
+//    SecurityConfig(@Qualifier("mySecurityPath") List<String> mySecurityPath) {
+//        SEC_PATH = mySecurityPath; // "/ware","/ware/*", "/ware/health/"
+//    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -26,8 +38,9 @@ public class SecurityConfig  {
                 .cors(AbstractHttpConfigurer::disable) // Disable CORS
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/register","/validate","/health/", "/", "/login", "/actuator/**","/metrics").permitAll()
-                        .requestMatchers("/user/*","/order/*", "/order", "/ware","/ware/*").permitAll()
+                        .requestMatchers("/user/*","/order/*", "/order").permitAll()
                         .requestMatchers("/clean").permitAll()
+                        .requestMatchers("/ware","/ware/*", "/ware/health/", "/ware/actuator/**", "/ware/metrics").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())

@@ -28,6 +28,7 @@ public class SecurityConfig  {
                         .requestMatchers("/register","/validate","/health/", "/", "/login", "/actuator/**","/metrics").permitAll()
                         .requestMatchers("/user/*","/order/*", "/order", "/ware","/ware/*").permitAll()
                         .requestMatchers("/clean").permitAll()
+                        .requestMatchers("/delivery","/delivery/*", "/delivery/health/", "/delivery/actuator/**", "/delivery/metrics/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())

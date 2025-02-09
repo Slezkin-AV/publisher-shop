@@ -139,10 +139,10 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: "billing.localdev.me"
+    - host: "publisher.localdev.me"
       http:
         paths:
-          - path: /
+          - path: /billing
             pathType: Prefix
             backend:
               service:

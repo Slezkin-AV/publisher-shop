@@ -31,7 +31,7 @@ public class DeliveryController {
         return "It's zero page. Use '/health/' path ";
     }
 
-    @PostMapping("/clean")
+    @PostMapping("/delivery/clean")
     public String cleanAll(){
         deliveryService.cleanAll();
         return "Delivery Cleaned";

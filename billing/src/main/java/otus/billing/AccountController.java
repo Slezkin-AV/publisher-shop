@@ -66,7 +66,7 @@ public class AccountController {
         return "It's zero page. Use '/health/' path ";
     }
 
-    @PostMapping("/clean")
+    @PostMapping("/billing/clean")
     public String cleanAll(){
         accountService.cleanAll();
         return "Accounts Cleaned";

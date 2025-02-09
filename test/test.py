@@ -11,7 +11,7 @@ from requests.exceptions import HTTPError
 import sys
 import time
 
-
+PUB_HOST='publisher.localdev.me'
 USER_HOST='publisher.localdev.me'
 ORDER_HOST='order.localdev.me'
 BILLING_HOST='billing.localdev.me'
@@ -19,14 +19,16 @@ WARE_HOST='ware.localdev.me'
 NOTE_HOST='note.localdev.me'
 DELIVERY_HOST='delivery.localdev.me'
 SERVICE_PORT=8000
-API_URL_USER=f"http://{USER_HOST}:{SERVICE_PORT}"
-API_URL_ORDER=f"http://{ORDER_HOST}:{SERVICE_PORT}"
-API_URL_BILLING=f"http://{BILLING_HOST}:{SERVICE_PORT}"
-API_URL_WARE=f"http://{WARE_HOST}:{SERVICE_PORT}"
-API_URL_NOTE=f"http://{NOTE_HOST}:{SERVICE_PORT}"
-API_URL_DELIVERY=f"http://{DELIVERY_HOST}:{SERVICE_PORT}"
+API_URL_PUB=f"http://{PUB_HOST}:{SERVICE_PORT}"
+API_URL_USER=f"http://{PUB_HOST}:{SERVICE_PORT}"
+API_URL_ORDER=f"http://{PUB_HOST}:{SERVICE_PORT}/order"
+API_URL_BILLING=f"http://{PUB_HOST}:{SERVICE_PORT}/billing"
+API_URL_WARE=f"http://{PUB_HOST}:{SERVICE_PORT}/ware"
+API_URL_NOTE=f"http://{PUB_HOST}:{SERVICE_PORT}"
+API_URL_DELIVERY=f"http://{PUB_HOST}:{SERVICE_PORT}"
 
-targets={API_URL_USER, API_URL_ORDER, API_URL_BILLING, API_URL_WARE, NOTE_HOST, API_URL_DELIVERY}
+# targets={API_URL_USER, API_URL_ORDER, API_URL_BILLING, API_URL_WARE, NOTE_HOST, API_URL_DELIVERY}
+targets={API_URL_USER,API_URL_BILLING+"/billing",API_URL_ORDER+"/order",API_URL_DELIVERY+"/delivery",API_URL_NOTE+"/note"}
 
 # ======================================== #
 
@@ -80,7 +82,7 @@ class OrderTest:
                     resp = requests.get(url, headers=header, params=param)
                     pass
                 case "put":
-                    resp = requests.post(url, headers=header, json=json_data, params=param)
+                    resp = requests.put(url, headers=header, json=json_data, params=param)
                     pass
                 case "post":
                     resp = requests.post(url, headers=header, json=json_data, params=param)
@@ -94,7 +96,7 @@ class OrderTest:
         except Exception as ex:
             logger.error(f"Exception: {ex}")
         else:
-            # logger.debug(f"data: {resp.text}")
+            logger.debug(f"data: {resp.text}")
             if resp.ok:
                 logger.info(f"response on {url}: {resp.text}")
                 return resp
@@ -114,7 +116,7 @@ class OrderTest:
         }
         logger.info(f"user : {user}")
         header={'Contetn-Type': 'application/json'}
-        resp = self.test_request("post", API_URL_USER + "/register", header, user, {})
+        resp = self.test_request("post", API_URL_PUB + "/register", header, user, {})
         if resp and resp.ok:
             id = resp.json()["id"]
             self.users[id]=user
@@ -131,7 +133,7 @@ class OrderTest:
         logger.info(f"login for id: {id}")
         lg = self.logins[id]
         header={'Contetn-Type': 'application/json'}
-        resp = self.test_request("post", API_URL_USER + "/login", header, lg, {})
+        resp = self.test_request("post", API_URL_PUB + "/login", header, lg, {})
         if resp and resp.ok:
             token = resp.json()["accessToken"]
             self.tokens[id] = token
@@ -191,7 +193,7 @@ class OrderTest:
 
 
 
-    def cleanAll(self):
+    def clean_all(self):
         header = {"Contetn-Type": "application/json"}
         for target in targets:
             resp = self.test_request("post", target + "/clean", header, {}, {} )
@@ -216,7 +218,11 @@ if __name__ == "__main__":
             logger.debug(f"processing 'ware'")
             test1.clean_ware()
 
-        if sys.argv[i] in("order", "or", "o"):
+        if sys.argv[i] == "clean":
+            logger.debug(f"processing 'clean'")
+            test1.clean_all()
+
+        if sys.argv[i] in("order1"):
             logger.debug(f"processing 'order'")
             id = test1.create_new_user()
             order = test1.new_order(id,10,50,10)
@@ -225,8 +231,30 @@ if __name__ == "__main__":
                 test1.login(id)
                 test1.increase_account(id, 1000)
                 test1.send_order(id, order)
+
+        if sys.argv[i] in("order2"):
+            logger.debug(f"processing 'order'")
+            id = test1.create_new_user()
+            order = test1.new_order(id,10,50,10)
+            logger.debug(f"Test USER: {order}");
+            if id:
+                test1.login(id)
+                test1.increase_account(id, 1000)
+                test1.send_order(id, order)
+                test1.send_order(id, order)
                 # test1.send_order(id, order)
-                # test1.send_order(id, order)
+
+        if sys.argv[i] in("order3"):
+            logger.debug(f"processing 'order'")
+            id = test1.create_new_user()
+            order = test1.new_order(id,10,50,10)
+            logger.debug(f"Test USER: {order}");
+            if id:
+                test1.login(id)
+                test1.increase_account(id, 1000)
+                test1.send_order(id, order)
+                test1.send_order(id, order)
+                test1.send_order(id, order)
 
     # # test1.cleanAll()
 

@@ -7,6 +7,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import otus.lib.event.OrderStatus;
 
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -39,6 +42,7 @@ public class Order {// extends Event {
     private Double sum;
     private Long wareId;
     private String orderStatusDescription;
+    private String md5;
 
     @PrePersist
     private void onCreate(){
@@ -52,5 +56,18 @@ public class Order {// extends Event {
         updatedAt = Timestamp.valueOf(LocalDateTime.now());
         setOrderStatusDescription(orderStatus.getDescription());
 //        orderStatusDescription = orderStatus.getDescription();
+        md5 = generateMD5();
+    }
+    private String generateMD5(){
+        String myHash = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+//        md.update(password.getBytes());
+            byte[] digest = md.digest();
+            myHash = DatatypeConverter.printHexBinary(digest).toUpperCase();
+        }catch (NoSuchAlgorithmException exception) {
+            ;
+        }
+        return myHash;
     }
 }

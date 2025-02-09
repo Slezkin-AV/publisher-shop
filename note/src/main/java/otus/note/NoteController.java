@@ -25,7 +25,7 @@ public class NoteController {
         return "It's zero page. Use '/health/' path ";
     }
 
-    @PostMapping("/clean")
+    @PostMapping("/note/clean")
     public String cleanAll(){
         noteService.cleanAll();
         return "Notes Cleaned";

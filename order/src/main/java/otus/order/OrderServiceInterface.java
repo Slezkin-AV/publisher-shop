@@ -6,4 +6,5 @@ public interface OrderServiceInterface {
     OrderDto createOrder(Order order);
     OrderDto getOrder(Long id);
     OrderDto updateStatus(Event event);
+//    boolean checkIdem(long miliseconds);
 }

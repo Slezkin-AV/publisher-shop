@@ -101,13 +101,13 @@ spec:
               path: /health/
               port: http
             initialDelaySeconds: 30
-            periodSeconds: 15
+            periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /health/
               port: http
-            initialDelaySeconds: 50
-            periodSeconds: 15
+            initialDelaySeconds: 30
+            periodSeconds: 10
           resources:
             limits:
               cpu: 1500m
@@ -142,10 +142,10 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: "order.localdev.me"
+    - host: "publisher.localdev.me"
       http:
         paths:
-          - path: /
+          - path: /order
             pathType: Prefix
             backend:
               service:

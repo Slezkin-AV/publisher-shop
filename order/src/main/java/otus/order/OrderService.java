@@ -9,8 +9,10 @@ import otus.lib.exception.ErrorType;
 import otus.lib.exception.SrvException;
 
 import java.sql.Timestamp;
+import java.time.Duration;
 import java.time.LocalDateTime;
-
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 @Slf4j
@@ -95,6 +97,12 @@ public class OrderService implements OrderServiceInterface {
     @Override
     public OrderDto createOrder(Order order){
         Order order1 = null;
+
+        //был ли такой же счет только что
+        if (checkIdemp(order, 1000L)){
+            throw new SrvException(ErrorType.ORD_DUPLICATE);
+        }
+
         try {
             order1 = orderRepository.save(order);
         }catch (RuntimeException ex){
@@ -120,6 +128,23 @@ public class OrderService implements OrderServiceInterface {
 
     public void cleanAll(){
         orderRepository.deleteAll();
+    }
+
+    private boolean checkIdemp(Order order, long miliseconds){
+        AtomicBoolean res = new AtomicBoolean(true);
+        List<Order> orderList = orderRepository.findByMd5(order.getMd5());
+        if(orderList != null && !orderList.isEmpty()){
+            orderList.forEach((ord) -> {
+                LocalDateTime start = LocalDateTime.now();
+                LocalDateTime end  = ord.getCreatedAt().toLocalDateTime();
+                Duration timeElapsed = Duration.between(start, end);
+                if ( timeElapsed.toMillis() < miliseconds){
+                    res.set(false);
+                }
+            });
+        }
+
+        return res.get();
     }
 
 }

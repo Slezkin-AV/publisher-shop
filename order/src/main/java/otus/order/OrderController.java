@@ -37,7 +37,7 @@ public class OrderController {
         return "It's zero page. Use '/health/' path ";
     }
 
-    @PostMapping("/clean")
+    @PostMapping("/order/clean")
     public String cleanAll(){
         orderService.cleanAll();
         return "Orders Cleaned";

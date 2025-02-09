@@ -75,9 +75,9 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: ware.localdev.me
+    - host: publisher.localdev.me
       paths:
-        - path: /
+        - path: /ware
           pathType: Prefix
   sec_hosts:
     - host: publisher.localdev.me
@@ -91,7 +91,7 @@ ingress:
 
 resources: #{}
   limits:
-    cpu: 1000m
+    cpu: 1500m
     memory: 512Mi
   requests:
     cpu: 500m
@@ -108,13 +108,13 @@ livenessProbe:
   httpGet:
     path: /health/
     port: http
-  initialDelaySeconds: 30
-  periodSeconds: 10
+  initialDelaySeconds: 40
+  periodSeconds: 15
 readinessProbe:
   httpGet:
     path: /health/
     port: http
-  initialDelaySeconds: 30
+  initialDelaySeconds: 40
   periodSeconds: 15
 
 #This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/

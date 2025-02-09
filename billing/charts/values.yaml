@@ -74,9 +74,9 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: billing.localdev.me
+    - host: publisher.localdev.me
       paths:
-        - path: /
+        - path: /billing
           pathType: Prefix
   tls: []
   #  - secretName: chart-example-tls

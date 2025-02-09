@@ -106,7 +106,7 @@ spec:
             httpGet:
               path: /health/
               port: http
-            initialDelaySeconds: 50
+            initialDelaySeconds: 30
             periodSeconds: 15
           resources:
             limits:
@@ -142,10 +142,10 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: "note.localdev.me"
+    - host: "publisher.localdev.me"
       http:
         paths:
-          - path: /
+          - path: /note
             pathType: Prefix
             backend:
               service:

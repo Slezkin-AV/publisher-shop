@@ -75,14 +75,14 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: delivery.localdev.me
+    - host: publisher.localdev.me
       paths:
-        - path: /
+        - path: /delivery
           pathType: Prefix
   sec_hosts:
     - host: publisher.localdev.me
       paths:
-        - path: /ware
+        - path: /delivery
           pathType: Prefix
   tls: []
   #  - secretName: chart-example-tls
@@ -109,7 +109,7 @@ livenessProbe:
     path: /health/
     port: http
   initialDelaySeconds: 30
-  periodSeconds: 10
+  periodSeconds: 15
 readinessProbe:
   httpGet:
     path: /health/
