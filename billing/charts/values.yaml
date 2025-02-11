@@ -76,7 +76,7 @@ ingress:
   hosts:
     - host: publisher.localdev.me
       paths:
-        - path: /billing
+        - path: /account
           pathType: Prefix
   tls: []
   #  - secretName: chart-example-tls

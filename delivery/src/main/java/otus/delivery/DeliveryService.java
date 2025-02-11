@@ -10,7 +10,7 @@ import otus.lib.exception.SrvException;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Random;
+//import java.util.Random;
 
 
 @Slf4j
@@ -64,9 +64,18 @@ public class DeliveryService implements DeliveryServiceInterface {
     }
 
     public boolean delivered(Event event){
-        Random rand = new Random();
-        int rr = rand.nextInt(10);
-        return event.getUserId() % 2 != 0;
+//        Random rand = new Random();
+//        int rr = rand.nextInt(10);
+        Long last = event.getWareId() % 10;
+
+        try {
+            if (last == 9) {
+                Thread.sleep(5000L);
+            }
+        }catch (InterruptedException exception){
+            log.error(exception.getLocalizedMessage());
+        }
+        return last != 2;
     }
 
     public void cleanAll(){

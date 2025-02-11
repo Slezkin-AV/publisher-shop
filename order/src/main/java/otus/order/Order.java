@@ -7,11 +7,12 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import otus.lib.event.OrderStatus;
 
-import javax.xml.bind.DatatypeConverter;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Base64;
 
 
 @Data
@@ -42,13 +43,16 @@ public class Order {// extends Event {
     private Double sum;
     private Long wareId;
     private String orderStatusDescription;
-    private String md5;
+
+    @Column(name = "hash")
+    private String hash;
 
     @PrePersist
     private void onCreate(){
         updatedAt = Timestamp.valueOf(LocalDateTime.now());
         createdAt = Timestamp.valueOf(LocalDateTime.now());
         orderStatus = OrderStatus.CREATED;
+        hash = generateHash();
     }
 
     @PreUpdate
@@ -56,18 +60,15 @@ public class Order {// extends Event {
         updatedAt = Timestamp.valueOf(LocalDateTime.now());
         setOrderStatusDescription(orderStatus.getDescription());
 //        orderStatusDescription = orderStatus.getDescription();
-        md5 = generateMD5();
     }
-    private String generateMD5(){
+    public String generateHash(){
         String myHash = null;
+        final String base = String.valueOf(userId) + String.valueOf(amount) + String.valueOf(sum) + String.valueOf(wareId);
         try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-//        md.update(password.getBytes());
-            byte[] digest = md.digest();
-            myHash = DatatypeConverter.printHexBinary(digest).toUpperCase();
-        }catch (NoSuchAlgorithmException exception) {
-            ;
-        }
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(base.getBytes(StandardCharsets.UTF_8));
+            myHash = Base64.getEncoder().encodeToString(hash).toUpperCase();
+        }catch (NoSuchAlgorithmException ignored) {}
         return myHash;
     }
 }

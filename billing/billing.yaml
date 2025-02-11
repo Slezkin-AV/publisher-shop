@@ -142,7 +142,7 @@ spec:
     - host: "publisher.localdev.me"
       http:
         paths:
-          - path: /billing
+          - path: /account
             pathType: Prefix
             backend:
               service:

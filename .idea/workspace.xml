@@ -9,37 +9,18 @@
       <change beforePath="$PROJECT_DIR$/billing/billing.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/billing/billing.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/billing/charts/values.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/billing/charts/values.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/billing/src/main/java/otus/billing/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/billing/src/main/java/otus/billing/AccountController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/billing/src/main/java/otus/lib/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/billing/src/main/java/otus/lib/security/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery/charts/values.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/charts/values.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/delivery/delivery.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/delivery.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery/src/main/java/otus/delivery/DeliveryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/src/main/java/otus/delivery/DeliveryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery/src/main/java/otus/lib/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/src/main/java/otus/lib/security/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/load_testing/clear.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/load_testing/locustfile.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/load_testing/order_test.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/note/charts/values.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/note/charts/values.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/note/note.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/note/note.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/note/src/main/java/otus/lib/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/note/src/main/java/otus/lib/security/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/note/src/main/java/otus/note/NoteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/note/src/main/java/otus/note/NoteController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/delivery/src/main/java/otus/delivery/DeliveryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/src/main/java/otus/delivery/DeliveryService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/order/charts/values.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/order/charts/values.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/order/order.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/order/order.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/lib/exception/ErrorType.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/lib/exception/ErrorType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/lib/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/lib/security/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/order/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/order/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderRepositoryInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderRepositoryInterface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderServiceInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/src/main/java/otus/lib/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/otus/lib/security/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/user.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/user/user.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ware/charts/values.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ware/charts/values.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ware/src/main/java/otus/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/ware/src/main/java/otus/AppConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ware/src/main/java/otus/lib/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/ware/src/main/java/otus/lib/security/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ware/src/main/java/otus/ware/WareController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ware/src/main/java/otus/ware/WareController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ware/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ware/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ware/ware.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ware/ware.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/port-forward.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/port-forward.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

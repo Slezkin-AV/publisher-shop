@@ -99,7 +99,7 @@ public class OrderService implements OrderServiceInterface {
         Order order1 = null;
 
         //был ли такой же счет только что
-        if (checkIdemp(order, 1000L)){
+        if (!checkIdemp(order, 500L)){
             throw new SrvException(ErrorType.ORD_DUPLICATE);
         }
 
@@ -130,20 +130,27 @@ public class OrderService implements OrderServiceInterface {
         orderRepository.deleteAll();
     }
 
-    private boolean checkIdemp(Order order, long miliseconds){
+    private boolean checkIdemp(Order order, long miliseconds) {
         AtomicBoolean res = new AtomicBoolean(true);
-        List<Order> orderList = orderRepository.findByMd5(order.getMd5());
-        if(orderList != null && !orderList.isEmpty()){
+        List<Order> orderList = orderRepository.findByHash(order.generateHash());
+        if (orderList != null && !orderList.isEmpty()) {
+            log.warn("checkIdemp: found {} orderList {} ", order.generateHash(), orderList.size());
             orderList.forEach((ord) -> {
                 LocalDateTime start = LocalDateTime.now();
-                LocalDateTime end  = ord.getCreatedAt().toLocalDateTime();
-                Duration timeElapsed = Duration.between(start, end);
-                if ( timeElapsed.toMillis() < miliseconds){
+                LocalDateTime end = ord.getCreatedAt().toLocalDateTime();
+                Duration timeElapsed = Duration.between(end, start);
+                log.warn("start = {}", start.toString());
+                log.warn("end = {}", end.toString());
+                log.warn("time duration = {}", timeElapsed.toMillis());
+                if (timeElapsed.toMillis() < miliseconds) {
                     res.set(false);
                 }
+                log.info(ord.getCreatedAt().toString(), ord.getHash());
             });
         }
-
+        else{
+            log.info("checkIdemp: order not found {} ", order.getHash());
+        }
         return res.get();
     }
 

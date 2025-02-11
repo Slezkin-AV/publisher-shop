@@ -118,7 +118,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
@@ -224,7 +224,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
@@ -367,7 +367,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
@@ -532,7 +532,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
@@ -697,7 +697,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
@@ -862,7 +862,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
@@ -986,7 +986,7 @@
               "options": {
                 "mode": "exclude",
                 "names": [
-                  "histogram_quantile(0.5, sum by(le) (rate(http_server_requests_seconds_bucket{service=\"user\"}[5m])))"
+                  "{class=\"otus.user.UserController\", exception=\"none\", instance=\"localhost:8000\", job=\"srv2\", method=\"createUser\", quantile=\"0.5\"}"
                 ],
                 "prefix": "All except:",
                 "readOnly": true
@@ -998,7 +998,7 @@
                 "value": {
                   "legend": false,
                   "tooltip": false,
-                  "viz": true
+                  "viz": false
                 }
               }
             ]
@@ -1011,7 +1011,7 @@
         "x": 0,
         "y": 29
       },
-      "id": 36,
+      "id": 41,
       "options": {
         "legend": {
           "calcs": [
@@ -1027,7 +1027,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
@@ -1192,7 +1192,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
@@ -1344,7 +1344,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
@@ -1502,7 +1502,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
@@ -3080,8 +3080,8 @@
       },
       {
         "current": {
-          "text": "10.244.5.104:8080",
-          "value": "10.244.5.104:8080"
+          "text": "10.244.0.3:9153",
+          "value": "10.244.0.3:9153"
         },
         "datasource": "prometheus",
         "includeAll": false,
@@ -3103,6 +3103,6 @@
   "timezone": "",
   "title": "_Microservice shop | OTUS",
   "uid": "hw5_1_12",
-  "version": 9,
+  "version": 2,
   "weekStart": ""
 }

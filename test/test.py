@@ -21,14 +21,14 @@ DELIVERY_HOST='delivery.localdev.me'
 SERVICE_PORT=8000
 API_URL_PUB=f"http://{PUB_HOST}:{SERVICE_PORT}"
 API_URL_USER=f"http://{PUB_HOST}:{SERVICE_PORT}"
-API_URL_ORDER=f"http://{PUB_HOST}:{SERVICE_PORT}/order"
-API_URL_BILLING=f"http://{PUB_HOST}:{SERVICE_PORT}/billing"
+API_URL_ORDER=f"http://{PUB_HOST}:{SERVICE_PORT}"
+API_URL_BILLING=f"http://{PUB_HOST}:{SERVICE_PORT}"
 API_URL_WARE=f"http://{PUB_HOST}:{SERVICE_PORT}/ware"
 API_URL_NOTE=f"http://{PUB_HOST}:{SERVICE_PORT}"
 API_URL_DELIVERY=f"http://{PUB_HOST}:{SERVICE_PORT}"
 
 # targets={API_URL_USER, API_URL_ORDER, API_URL_BILLING, API_URL_WARE, NOTE_HOST, API_URL_DELIVERY}
-targets={API_URL_USER,API_URL_BILLING+"/billing",API_URL_ORDER+"/order",API_URL_DELIVERY+"/delivery",API_URL_NOTE+"/note"}
+targets={API_URL_USER,API_URL_BILLING + "/account",API_URL_ORDER+"/order",API_URL_DELIVERY+"/delivery",API_URL_NOTE+"/note"}
 
 # ======================================== #
 
@@ -172,6 +172,27 @@ class OrderTest:
         if resp and resp.ok:
             pass
 
+    def cancel_order(self, id, order):
+        
+        # order = self.new_order(id)
+        logger.debug(f"send order : {order}")
+
+        header={'Contetn-Type': 'application/json'}
+        # header = {"Authorization": f"Bearer {token}"}
+
+        try: 
+            lg = self.logins[id]
+            token = self.tokens[id]
+        except Exception as ex:
+            logger.error(f"send order Exception: {ex}, user not logged")
+            return
+        else:
+            logger.info(f"order for login: {lg}")
+            # with token: {token}")
+
+        resp = self.test_request("post", API_URL_ORDER + "/cancel", header, order, {})
+        if resp and resp.ok:
+            pass
 
 
     def increase_account(self, id, sum):
@@ -209,55 +230,86 @@ if __name__ == "__main__":
     # logging.basicConfig(level=logging.INFO)
     logger.info("Test STARTING");
 
+
+    ware1 = 21       # успешный сценарий + идемпотентность
+    ware2 = 22       # не хватает денег, товара, безуспешная доставка
+    ware9 = 29       # отмена счета
+
     test1 = OrderTest() 
 
     nums = len(sys.argv)
     for i in range(1,nums):
         
+
         if sys.argv[i] == "ware":
             logger.debug(f"processing 'ware'")
             test1.clean_ware()
+
 
         if sys.argv[i] == "clean":
             logger.debug(f"processing 'clean'")
             test1.clean_all()
 
-        if sys.argv[i] in("order1"):
-            logger.debug(f"processing 'order'")
+
+        if sys.argv[i] == "order1":
+            logger.debug(f"processing 'order1'")
             id = test1.create_new_user()
-            order = test1.new_order(id,10,50,10)
-            logger.debug(f"Test USER: {order}");
             if id:
                 test1.login(id)
                 test1.increase_account(id, 1000)
+
+                order = test1.new_order(id,10,50,ware1)
+                logger.debug(f"Test USER: {order}");
                 test1.send_order(id, order)
 
-        if sys.argv[i] in("order2"):
-            logger.debug(f"processing 'order'")
+
+        if sys.argv[i] == "order11":
+            logger.debug(f"processing 'order11'")
             id = test1.create_new_user()
-            order = test1.new_order(id,10,50,10)
-            logger.debug(f"Test USER: {order}");
             if id:
                 test1.login(id)
                 test1.increase_account(id, 1000)
-                test1.send_order(id, order)
-                test1.send_order(id, order)
-                # test1.send_order(id, order)
 
-        if sys.argv[i] in("order3"):
-            logger.debug(f"processing 'order'")
+                order = test1.new_order(id,10,50,ware1)
+                logger.debug(f"Test USER: {order}");
+                test1.send_order(id, order)
+                test1.send_order(id, order)
+                time.sleep(5)
+                test1.send_order(id, order)
+
+
+        if sys.argv[i] == "order2":
+            logger.debug(f"processing 'order2'")
             id = test1.create_new_user()
-            order = test1.new_order(id,10,50,10)
-            logger.debug(f"Test USER: {order}");
             if id:
                 test1.login(id)
                 test1.increase_account(id, 1000)
-                test1.send_order(id, order)
-                test1.send_order(id, order)
+
+                order = test1.new_order(id,10,1100,ware2) # превышение денег
+                logger.debug(f"Test USER: {order}");
                 test1.send_order(id, order)
 
-    # # test1.cleanAll()
+                order = test1.new_order(id,200,450,ware2) # превышение товара
+                logger.debug(f"Test USER: {order}");
+                test1.send_order(id, order)
+
+                order = test1.new_order(id,10,450,ware2) # безуспешная доставка
+                logger.debug(f"Test USER: {order}");
+                test1.send_order(id, order)
+
+
+        if sys.argv[i] == "order9":
+            logger.debug(f"processing 'order9'")
+            id = test1.create_new_user()
+
+            if id:
+                test1.login(id)
+                test1.increase_account(id, 1000)
+                order = test1.new_order(id,10,50,ware9) # отмена счета
+                logger.debug(f"Test USER: {order}");
+                test1.send_order(id, order)
+                sleep(1)
+                test1.cancel_order(id, order)
+
 
     logger.info("Test FINISHED");
-
-

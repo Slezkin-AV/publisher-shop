@@ -1,6 +1,7 @@
 package otus.order;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -9,5 +10,6 @@ import java.util.List;
 @Repository
 public interface OrderRepositoryInterface extends JpaRepository<Order, Long> {
     List<Order> findById(long id);
-    List<Order> findByMd5(String md5);
+//    @Query("SELECT o FROM Order o WHERE o.hash = :hash")
+    List<Order> findByHash(String hash);
 }
