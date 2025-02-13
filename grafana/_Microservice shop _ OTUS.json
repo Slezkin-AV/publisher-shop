@@ -127,7 +127,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "sum by(service) (rate(http_server_requests_seconds_count{uri!~\"/actuator/prometheus|/health/\", status!~\"500|400|401\"}[5m]))",
+          "expr": "sum by(service) (rate(http_server_requests_seconds_count{uri!~\"/actuator/prometheus|/health/\", status!~\"500\"}[5m]))",
           "format": "time_series",
           "fullMetaSearch": false,
           "includeNullMetadata": false,
@@ -233,7 +233,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "increase(kafka_producer_topic_record_send_total[5m])",
+          "expr": "rate(kafka_producer_topic_record_send_total{namespace=\"pub\"}[5m])",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -243,7 +243,7 @@
           "useBackend": false
         }
       ],
-      "title": "Kafka Requests Count",
+      "title": "Kafka Requests per second",
       "type": "timeseries"
     },
     {
@@ -1323,7 +1323,32 @@
           },
           "unit": "none"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "{container=\"billing\", error=\"none\", exception=\"none\", instance=\"10.244.9.5:8000\", job=\"billing\", method=\"POST\", namespace=\"pub\", outcome=\"CLIENT_ERROR\", pod=\"billing-74c566ddc8-srx22\", service=\"billing\", status=\"400\", uri=\"/account/{id}\"}"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 9,
@@ -3080,8 +3105,8 @@
       },
       {
         "current": {
-          "text": "10.244.0.3:9153",
-          "value": "10.244.0.3:9153"
+          "text": "10.244.0.13:9153",
+          "value": "10.244.0.13:9153"
         },
         "datasource": "prometheus",
         "includeAll": false,
@@ -3096,13 +3121,13 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "_Microservice shop | OTUS",
   "uid": "hw5_1_12",
-  "version": 2,
+  "version": 7,
   "weekStart": ""
 }

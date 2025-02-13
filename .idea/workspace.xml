@@ -6,21 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="0cbd886b-c6dd-4d8d-8850-3bf3bdcb1fb2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/billing/billing.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/billing/billing.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/billing/charts/values.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/billing/charts/values.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/billing/src/main/java/otus/billing/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/billing/src/main/java/otus/billing/AccountController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery/delivery.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/delivery.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery/src/main/java/otus/delivery/DeliveryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/src/main/java/otus/delivery/DeliveryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/delivery/charts/values.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/charts/values.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/note/charts/values.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/note/charts/values.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/order/charts/values.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/order/charts/values.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/order.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/order/order.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/order/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/order/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderRepositoryInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderRepositoryInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/port-forward.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/port-forward.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/clear.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/loc.sh" beforeDir="false" afterPath="$PROJECT_DIR$/test/loc.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/locustfile.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/locustfile.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/charts/values.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/user/charts/values.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ware/charts/values.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ware/charts/values.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ware/ware.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ware/ware.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

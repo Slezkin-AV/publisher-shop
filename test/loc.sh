@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+# set -e
 
 for proc in `pgrep -f locust`
 do
@@ -8,5 +8,4 @@ do
   kill -9 $proc
 done
 
-locust 
-# --host http://publisher.localdev.me
+locust --host http://publisher.localdev.me:8000
