@@ -34,7 +34,7 @@ API_URL_DELIVERY=f"http://{PUB_HOST}:{SERVICE_PORT}"
 # from flask import Flask, request, abort, redirect
 # app = Flask(__name__)
 
-ware_start = 20
+ware_start = 30
 account_sum =100000
 
 # ======================================== #

@@ -5,17 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0cbd886b-c6dd-4d8d-8850-3bf3bdcb1fb2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/billing/charts/values.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/billing/charts/values.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery/charts/values.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/charts/values.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/note/charts/values.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/note/charts/values.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/charts/values.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/order/charts/values.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/clear.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/loc.sh" beforeDir="false" afterPath="$PROJECT_DIR$/test/loc.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/locustfile.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/locustfile.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/charts/values.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/user/charts/values.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ware/charts/values.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ware/charts/values.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ware/ware.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ware/ware.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/arch/Проект Микросервисаня архитектура.pptx" beforeDir="false" afterPath="$PROJECT_DIR$/arch/Проект Микросервисаня архитектура.pptx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

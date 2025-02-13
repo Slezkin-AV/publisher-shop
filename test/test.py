@@ -30,6 +30,9 @@ API_URL_DELIVERY=f"http://{PUB_HOST}:{SERVICE_PORT}"
 # targets={API_URL_USER, API_URL_ORDER, API_URL_BILLING, API_URL_WARE, NOTE_HOST, API_URL_DELIVERY}
 targets={API_URL_USER,API_URL_BILLING + "/account",API_URL_ORDER+"/order",API_URL_DELIVERY+"/delivery",API_URL_NOTE+"/note"}
 
+ware_start = 30
+account_sum =1000
+
 # ======================================== #
 
 class CustomFormatter(logging.Formatter):
@@ -231,9 +234,9 @@ if __name__ == "__main__":
     logger.info("Test STARTING");
 
 
-    ware1 = 21       # успешный сценарий + идемпотентность
-    ware2 = 22       # не хватает денег, товара, безуспешная доставка
-    ware9 = 29       # отмена счета
+    ware1 = 1 + ware_start      # успешный сценарий + идемпотентность
+    ware2 = 2 + ware_start      # не хватает денег, товара, безуспешная доставка
+    ware9 = 9 + ware_start      # отмена счета
 
     test1 = OrderTest() 
 
@@ -256,7 +259,7 @@ if __name__ == "__main__":
             id = test1.create_new_user()
             if id:
                 test1.login(id)
-                test1.increase_account(id, 1000)
+                test1.increase_account(id, account_sum)
 
                 order = test1.new_order(id,10,50,ware1)
                 logger.debug(f"Test USER: {order}");
@@ -268,7 +271,7 @@ if __name__ == "__main__":
             id = test1.create_new_user()
             if id:
                 test1.login(id)
-                test1.increase_account(id, 1000)
+                test1.increase_account(id, account_sum)
 
                 order = test1.new_order(id,10,50,ware1)
                 logger.debug(f"Test USER: {order}");
@@ -283,7 +286,7 @@ if __name__ == "__main__":
             id = test1.create_new_user()
             if id:
                 test1.login(id)
-                test1.increase_account(id, 1000)
+                test1.increase_account(id, account_sum)
 
                 order = test1.new_order(id,10,1100,ware2) # превышение денег
                 logger.debug(f"Test USER: {order}");
@@ -304,7 +307,7 @@ if __name__ == "__main__":
 
             if id:
                 test1.login(id)
-                test1.increase_account(id, 1000)
+                test1.increase_account(id, account_sum)
                 order = test1.new_order(id,10,50,ware9) # отмена счета
                 logger.debug(f"Test USER: {order}");
                 test1.send_order(id, order)
