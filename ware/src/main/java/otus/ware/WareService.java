@@ -74,6 +74,9 @@ public class WareService implements WareServiceInterface {
         EventType eventType = EventType.NONE;
         EventStatus eventStatus = EventStatus.ERROR;
 
+        if( event.getWareId() == null) {
+            return false;
+        }
         WareDto wareDto = getWare(event.getWareId());
         if(wareDto == null){
 //            eventStatus = EventStatus.ERROR;

@@ -5,6 +5,7 @@ import faker
 from requests.exceptions import HTTPError
 
 import random
+import time
 
 API_URL='http://{SERVICE_HOST}:{SERVICE_PORT}'.format(
     SERVICE_HOST="publisher.localdev.me",
@@ -34,7 +35,7 @@ API_URL_DELIVERY=f"http://{PUB_HOST}:{SERVICE_PORT}"
 # from flask import Flask, request, abort, redirect
 # app = Flask(__name__)
 
-ware_start = 30
+ware_start = 40
 account_sum =100000
 
 # ======================================== #
@@ -148,7 +149,7 @@ class FirstSuccess(FastHttpUser):
             return login
 
 
-    @task(2)
+    @task(1)
     def create_users(self, num = 3):
         logger.info("create_users")
         tokenList = {}
@@ -170,6 +171,7 @@ class FirstSuccess(FastHttpUser):
                         id = resp.json()["userID"]
                         tokenList[id] = (lg['login'], tok)
                         self.logins.append(lg)
+                        time.sleep(2)
                         self.increase_account(id, account_sum)
                         # self.tokens[id] = (lg['login'], tok)
         if tokenList:
@@ -306,7 +308,8 @@ class FirstSuccess(FastHttpUser):
         # logger.info("get_user")
         tokenListNew = {}
         if self.tokens:
-            tokenList = self.tokens[0]
+            ind = random.randint(0, len(self.tokens))
+            tokenList = self.tokens[ind]
         else:
             logger.warning(f"No tokens /order1")
             return

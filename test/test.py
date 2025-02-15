@@ -198,6 +198,33 @@ class OrderTest:
             pass
 
 
+
+
+    def order_close(self, id, order):
+        
+        # order = self.new_order(id)
+        logger.debug(f"close order : {order}")
+
+        header={'Contetn-Type': 'application/json'}
+        # header = {"Authorization": f"Bearer {token}"}
+
+        try: 
+            lg = self.logins[id]
+            token = self.tokens[id]
+        except Exception as ex:
+            logger.error(f"send order Exception: {ex}, user not logged")
+            return
+        else:
+            logger.info(f"order for login: {lg}")
+            # with token: {token}")
+
+        resp = self.test_request("post", API_URL_ORDER + "/order/close/" + str(order["userId"]), header, {}, {})
+        if resp and resp.ok:
+            pass
+
+
+
+
     def increase_account(self, id, sum):
         logger.info(f"increase_account: for user {id} on {sum}")
         token = self.tokens[id]
@@ -234,8 +261,10 @@ if __name__ == "__main__":
     logger.info("Test STARTING");
 
 
-    ware1 = 1 + ware_start      # успешный сценарий + идемпотентность
+    ware1 = 1 + ware_start      # успешный сценарий + идемпотентность REST
     ware2 = 2 + ware_start      # не хватает денег, товара, безуспешная доставка
+    ware7 = 7 + ware_start      # идемпотентность Kafka
+    ware8 = 8 + ware_start      # идемпотентность Kafka
     ware9 = 9 + ware_start      # отмена счета
 
     test1 = OrderTest() 
@@ -244,16 +273,17 @@ if __name__ == "__main__":
     for i in range(1,nums):
         
 
+# ---------------------------------------- #
         if sys.argv[i] == "ware":
             logger.debug(f"processing 'ware'")
             test1.clean_ware()
 
-
+# ---------------------------------------- #
         if sys.argv[i] == "clean":
             logger.debug(f"processing 'clean'")
             test1.clean_all()
 
-
+# ---------------------------------------- #
         if sys.argv[i] == "order1":
             logger.debug(f"processing 'order1'")
             id = test1.create_new_user()
@@ -264,8 +294,24 @@ if __name__ == "__main__":
                 order = test1.new_order(id,10,50,ware1)
                 logger.debug(f"Test USER: {order}");
                 test1.send_order(id, order)
+                # test1.order_close(id, order)
 
+# ---------------------------------------- #
+        if sys.argv[i] == "order8":
+            logger.debug(f"processing 'order1'")
+            id = test1.create_new_user()
+            if id:
+                test1.login(id)
+                test1.increase_account(id, account_sum)
 
+                order = test1.new_order(id,1,5,ware8)
+                logger.debug(f"Test USER: {order}");
+                test1.send_order(id, order)
+                order = test1.new_order(id,1,5,ware7)
+                logger.debug(f"Test USER: {order}");
+                test1.send_order(id, order)
+
+# ---------------------------------------- #
         if sys.argv[i] == "order11":
             logger.debug(f"processing 'order11'")
             id = test1.create_new_user()
@@ -280,7 +326,7 @@ if __name__ == "__main__":
                 time.sleep(5)
                 test1.send_order(id, order)
 
-
+# ---------------------------------------- #
         if sys.argv[i] == "order2":
             logger.debug(f"processing 'order2'")
             id = test1.create_new_user()
@@ -301,6 +347,7 @@ if __name__ == "__main__":
                 test1.send_order(id, order)
 
 
+# ---------------------------------------- #
         if sys.argv[i] == "order9":
             logger.debug(f"processing 'order9'")
             id = test1.create_new_user()

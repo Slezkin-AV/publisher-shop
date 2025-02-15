@@ -26,6 +26,7 @@ public class Event {
     private Timestamp created;
     private Timestamp updated;
     private OrderStatus orderStatus;
+    private String strUid;
 
     public String key(){
         return message;

@@ -13,6 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.UUID;
 
 
 @Data
@@ -46,6 +47,7 @@ public class Order {// extends Event {
 
     @Column(name = "hash")
     private String hash;
+    private UUID uid = java.util.UUID.randomUUID();
 
     @PrePersist
     private void onCreate(){
