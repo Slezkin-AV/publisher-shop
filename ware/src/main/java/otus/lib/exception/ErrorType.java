@@ -14,6 +14,7 @@ public enum ErrorType {
     USR_INCORRECT_PASSWORD("Password is incorrect"),
     ACC_NOT_FOUND("Account not found"),
     ORD_NOT_FOUND("Order not found"),
+    ORD_DUPLICATE("Order already exists"),
     UNKNOWN_ERROR("Unknown Error");
 
     ErrorType(String description) {

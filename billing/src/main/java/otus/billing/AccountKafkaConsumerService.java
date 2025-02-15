@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import otus.lib.event.Event;
+import otus.lib.event.EventIdent;
 import otus.lib.event.EventStatus;
 import otus.lib.event.EventType;
 
@@ -20,6 +21,8 @@ public class AccountKafkaConsumerService {
 
     @Autowired
     private final AccountService accountService;
+
+    private final EventIdent eventIdent;
 
     @KafkaListener(topics = {"user", "order", "ware", "delivery"}, groupId = "billing-group")//, errorHandler = "handleKafkaException")
     public void listen(String message) {
@@ -36,7 +39,15 @@ public class AccountKafkaConsumerService {
 
 //        log.info(event.description());
         if( event != null && event.getType() != null && event.getStatus() != null) {
-            accountService.processEvent(event);
+            if(event.getType() == EventType.FINAL || event.getType() == EventType.ORDER_DELIVERED || event.getType() == EventType.ORDER_CANCELED){
+                eventIdent.clearIdent(event.getStrUid());
+            }else {
+                if (eventIdent.addType(event.getStrUid(), event.getType()) || event.getWareId() % 10 == 8) {
+                    accountService.processEvent(event);
+                } else {
+                    log.warn("Event duplicates: " + message);
+                }
+            }
         }
     }
 }

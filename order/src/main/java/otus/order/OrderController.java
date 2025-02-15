@@ -26,6 +26,11 @@ public class OrderController {
         return new ResponseEntity<>(savedOrder, HttpStatus.CREATED);
     }
 
+//    @PostMapping("/order/close/{id}")
+//    public ResponseEntity<OrderDto> closeOrder(@RequestPart Long id){
+//        OrderDto savedOrder = orderService.closeOrder(id);
+//        return new ResponseEntity<>(savedOrder, HttpStatus.CREATED);
+//    }
 
     @GetMapping("/health/")
     public String healthCheck(){
