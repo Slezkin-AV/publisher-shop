@@ -32,6 +32,27 @@ public class OrderService implements OrderServiceInterface {
     }
 
     @Override
+    public OrderDto closeOrder(Long id){
+        Order order = orderRepository.findById(id).orElseThrow(() -> new SrvException(ErrorType.ORD_NOT_FOUND));
+
+        // + to Kafka
+        try {
+            EventType eventType = EventType.FINAL;
+            Event event1 = new Event(eventType, EventStatus.SUCCESS,
+                    "order",eventType.getDescription(), order.getUserId(), order.getAmount(),
+                    order.getId(),order.getWareId(), order.getSum(),
+                    Timestamp.valueOf(LocalDateTime.now()),
+                    Timestamp.valueOf(LocalDateTime.now()), order.getOrderStatus(), order.getUid().toString()
+            );
+            eventProducer.sendMessage(event1);
+        } catch(RuntimeException ex) {
+            log.info(String.valueOf(ex));
+        }
+
+        return OrderMapper.mapToOrderDto(order);
+    }
+
+    @Override
     public OrderDto updateStatus(Event event){
         Order order = orderRepository.findById(event.getOrderId()).orElseThrow(() -> new SrvException(ErrorType.ORD_NOT_FOUND));
         OrderStatus orderStatus = OrderStatus.NONE;
@@ -116,9 +137,12 @@ public class OrderService implements OrderServiceInterface {
                     "order",eventType.getDescription(), order1.getUserId(), order1.getAmount(),
                     order1.getId(),order1.getWareId(), order1.getSum(),
                     Timestamp.valueOf(LocalDateTime.now()),
-                    Timestamp.valueOf(LocalDateTime.now()), order1.getOrderStatus()
+                    Timestamp.valueOf(LocalDateTime.now()), order1.getOrderStatus(), order1.getUid().toString()
             );
             eventProducer.sendMessage(event1);
+            if(event1.getWareId() % 10 == 8 || event1.getWareId() % 10 == 7) {
+                eventProducer.sendMessage(event1);
+            }
         } catch(RuntimeException ex) {
             log.info(String.valueOf(ex));
         }

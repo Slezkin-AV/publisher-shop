@@ -5,7 +5,40 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0cbd886b-c6dd-4d8d-8850-3bf3bdcb1fb2" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/arch/Проект Микросервисаня архитектура.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/arch/Проект Микросервисаня архитектура.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/arch/Проект Микросервисаня архитектура.pptx" beforeDir="false" afterPath="$PROJECT_DIR$/arch/Проект Микросервисаня архитектура.pptx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/billing/billing.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/billing/billing.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/billing/src/main/java/otus/billing/AccountKafkaConsumerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/billing/src/main/java/otus/billing/AccountKafkaConsumerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/billing/src/main/java/otus/billing/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/billing/src/main/java/otus/billing/AccountService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/billing/src/main/java/otus/lib/event/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/billing/src/main/java/otus/lib/event/Event.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/billing/src/main/java/otus/lib/exception/ErrorType.java" beforeDir="false" afterPath="$PROJECT_DIR$/billing/src/main/java/otus/lib/exception/ErrorType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/delivery/delivery.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/delivery.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/delivery/src/main/java/otus/delivery/Delivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/src/main/java/otus/delivery/Delivery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/delivery/src/main/java/otus/lib/event/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/src/main/java/otus/lib/event/Event.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/delivery/src/main/java/otus/lib/exception/ErrorType.java" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/src/main/java/otus/lib/exception/ErrorType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/note/note.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/note/note.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/note/src/main/java/otus/lib/event/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/note/src/main/java/otus/lib/event/Event.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/note/src/main/java/otus/lib/exception/ErrorType.java" beforeDir="false" afterPath="$PROJECT_DIR$/note/src/main/java/otus/lib/exception/ErrorType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/note/src/main/java/otus/note/Note.java" beforeDir="false" afterPath="$PROJECT_DIR$/note/src/main/java/otus/note/Note.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order/order.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/order/order.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/lib/event/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/lib/event/Event.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/lib/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/lib/security/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/order/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/order/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/otus/order/OrderServiceInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/locustfile.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/locustfile.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/otus/lib/event/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/otus/lib/event/Event.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/otus/lib/exception/ErrorType.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/otus/lib/exception/ErrorType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/otus/user/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/otus/user/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/user.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/user/user.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ware/src/main/java/otus/lib/event/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/ware/src/main/java/otus/lib/event/Event.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ware/src/main/java/otus/lib/exception/ErrorType.java" beforeDir="false" afterPath="$PROJECT_DIR$/ware/src/main/java/otus/lib/exception/ErrorType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ware/src/main/java/otus/ware/WareService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ware/src/main/java/otus/ware/WareService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -4,6 +4,7 @@ import lombok.*;
 import otus.lib.event.OrderStatus;
 
 import java.sql.Timestamp;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -21,4 +22,5 @@ public class OrderDto {//extends Event {
     private Long wareId;
     private String orderStatusDescription;
     private String hash;
+    private UUID uid;
 }

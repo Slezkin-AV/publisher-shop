@@ -100,7 +100,7 @@ public class AccountService implements AccountServiceInterface {
         eventProducer.sendMessage(new Event(EventType.ACCOUNT_UPDATE, EventStatus.SUCCESS, "billing",
                 EventType.ACCOUNT_UPDATE.getDescription(),
                 id, null,null,null, sum,
-                Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now()), OrderStatus.NONE));
+                Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now()), OrderStatus.NONE, null));
 
         return accountDto;
     }
