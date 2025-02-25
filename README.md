@@ -10,12 +10,15 @@
  - ware
  - delivery
 
-Все сервисы реализованы на 
+Все сервисы реализованы на Java
+
 Для каждого сервиса поднимается отдельная БД в поде сервиса.
 
 ## Техстек
 Сервисы:			Java Spring Boot
+
 БД:					PostgreSQL
+
 Брокер сообщений:	Kafka
 
 
@@ -25,12 +28,15 @@ Event collaboration, Idemponetcy, Saga
 
 ## Установка
 helm -n pub install <имя сервиса> 
+
 или
+
 ./scripts/install.sh <имя сервиса>
 
 
 ## Тестирование
 Используются сценарии, реализованные на Python.
+
 Запуск:
 ./test/test.py <имя сценария>
 
@@ -44,6 +50,7 @@ helm -n pub install <имя сервиса>
 
 ## Нагрузка
 Используется Locust
+
 Запуск:
 ./test/loc.sh
 
