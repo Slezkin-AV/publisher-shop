@@ -23,7 +23,7 @@
 
 
 ## Архитектурные паттерны
-Event collaboration, Idemponetcy, Saga
+Event collaboration, Idempotence, Saga
 
 
 ## Установка
